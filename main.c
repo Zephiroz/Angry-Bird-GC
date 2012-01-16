@@ -16,7 +16,6 @@
 #define g 9.8
 #define Nbx	width/sizeCASE
 #define Nby	height/sizeCASE
-#define fond VAL_YELLOW
 #define Xt 10 //abscisse de la tour (en matricielle)
 
 //----------------------------------------------------------------------------------------------------
@@ -29,13 +28,13 @@ void Matrice(void);
 //VARIABLES GLOBALES
 int posX, posY, posX0, posY0;
 float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
-int color; 
+int color, colorN, colorV, colorB, fond; 
 float Yt;
 int tailleTOUR; 
 
 int Mat[Nbx][Nby];//l'air de jeu
 
-//--Amélioration
+//--Amï¿½lioration
 int light=0;
 //int posxmouse, posymouse, left, right, key;
 
@@ -56,13 +55,17 @@ int main (int argc, char *argv[])
 	Cls();
 	//initialisation
 	posX0=0;
-	posY0=height-1-15;//- taille du cercle(carré);
+	posY0=height-1-15;//- taille du cercle(carrï¿½);
 	posX=posX0;
 	posY=posY0;
+	fond=VAL_YELLOW;
 	color = VAL_RED;
+	colorN = VAL_BLACK;
+	colorV = VAL_GREEN;
+	colorB = VAL_BLUE;
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
 	
-	//dessin de l'arrière plan
+	//dessin de l'arriï¿½re plan
 
 	printf("taille de la tour :\n");
 	scanf("%d", &tailleTOUR);
@@ -73,7 +76,7 @@ int main (int argc, char *argv[])
 		{
 			if (light==1) 
 			{
-				Mat[i][j]=VAL_BLACK;
+				Mat[i][j]=colorN;
 			}else
 				Mat [i][j]=fond;
 		}
@@ -84,19 +87,19 @@ int main (int argc, char *argv[])
 	{
 		if (light==1)
 		{
-			Mat[Xt][Nby-1-i]=VAL_WHITE;  
+			Mat[Xt][Nby-1-i]=colorN;  
 		}
 		else
-			Mat[Xt][Nby-1-i]=VAL_GREEN;  
+			Mat[Xt][Nby-1-i]=colorV;  
 	}
 	for (i=1; i<tailleTOUR; i+=2)
 	{
 		if (light==1)
 		{
-			Mat[Xt][Nby-1-i]=VAL_WHITE;  
+			Mat[Xt][Nby-1-i]=colorN;  
 		}
 		else
-			Mat[Xt][Nby-1-i]=VAL_BLUE;  
+			Mat[Xt][Nby-1-i]=colorB;  
 	}
 
 	Matrice ();
@@ -105,7 +108,7 @@ int main (int argc, char *argv[])
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
 	
-	//Connaître la position de la souris sur le Canvas
+	//Connaï¿½tre la position de la souris sur le Canvas
 	//GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
 	
 	DrawBird(posX, posY, color);   
@@ -134,8 +137,8 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			currentTIME=0;
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 1);
 			SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_CTRL_MODE,VAL_INDICATOR);
-	        SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_CTRL_MODE,VAL_INDICATOR); 
-	        SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_CTRL_MODE,VAL_INDICATOR); 
+	     		SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_CTRL_MODE,VAL_INDICATOR); 
+	      		SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_CTRL_MODE,VAL_INDICATOR); 
 
 			break;
 		}
@@ -179,9 +182,7 @@ int CVICALLBACK ON_PUISSANCE (int panel, int control, int event,
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (panelHandle, PANEL_PUISSANCE, &V0);
-			//calcule de VoX &VoY
-
-			
+			//calcule de VoX &VoY		
 
 			break;
 		}
@@ -216,7 +217,9 @@ int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 	switch (event)
 		{
 		case EVENT_COMMIT:
-			light=1;
+			fond=colorN;
+			colorV=colorN;
+			colorB=colorN;
 			break;
 		}
 	return 0;
@@ -258,8 +261,8 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 	        			
 	        			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0);
 	        			SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_CTRL_MODE,VAL_HOT);
-	         	    	SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_CTRL_MODE,VAL_HOT); 
-	         	    	SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_CTRL_MODE,VAL_HOT); 
+		         	    	SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_CTRL_MODE,VAL_HOT); 
+	        	 	    	SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_CTRL_MODE,VAL_HOT); 
 	        		}
 	        		else DrawBird(posX, posY, color); 
 	        		
@@ -270,7 +273,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 	        SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_CTRL_MODE,VAL_HOT); 
 	        SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_CTRL_MODE,VAL_HOT); 
 
-//idée de collision -------------------------------------------------------------------------	        	
+//idï¿½e de collision -------------------------------------------------------------------------	        	
 	        /*if ((posX<width)&&(posY<height))
 	        {
 	        	/*if (distance())
@@ -325,7 +328,7 @@ void Matrice(void)
 	}
 }	 
 
-//idée de collision -------------------------------------------------------------------------	  
+//idï¿½e de collision -------------------------------------------------------------------------	  
 /*int distance()
 {   (posX*posX+posY*posY)
 } */
