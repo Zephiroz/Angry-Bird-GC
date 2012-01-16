@@ -35,7 +35,7 @@ int tailleTOUR;
 
 int Mat[Nbx][Nby];//l'air de jeu
 
-//--Amélioration
+//--Amï¿½lioration
 int light=0;
 //int posxmouse, posymouse, left, right, key;
 
@@ -54,15 +54,15 @@ int main (int argc, char *argv[])
 	if ((panelHandle = LoadPanel (0, "Angry birds.uir", PANEL)) < 0)
 		return -1;
 	Cls();
-	//initialisation
+	// Initialisation
 	posX0=0;
-	posY0=height-1-15;//- taille du cercle(carré);
+	posY0=height-1-15; //- taille du cercle (carre);
 	posX=posX0;
 	posY=posY0;
 	color = VAL_RED;
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
 	
-	//dessin de l'arrière plan
+	// Dessin de l'arriere plan
 
 	printf("taille de la tour :\n");
 	scanf("%d", &tailleTOUR);
@@ -78,7 +78,7 @@ int main (int argc, char *argv[])
 				Mat [i][j]=fond;
 		}
 	}
-	// dessin de la tour
+	// Dessin de la tour
 	
 	for (i=0; i<tailleTOUR; i+=2)
 	{
@@ -101,12 +101,12 @@ int main (int argc, char *argv[])
 
 	Matrice ();
 	
-	//dimentionner le canvas
+	// Dimentionner le canvas
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
 	
-	//Connaître la position de la souris sur le Canvas
-	//GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
+	// Connaitre la position de la souris sur le Canvas
+	// GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
 	
 	DrawBird(posX, posY, color);   
 	
@@ -117,7 +117,7 @@ int main (int argc, char *argv[])
 }
 
 //----------------------------------------------------------------------------------------------------  
-//Nos BOUTONS
+// Nos BOUTONS
 //---------------------------------------------------------------------------------------------------- 
 
 int CVICALLBACK ON_FIRE (int panel, int control, int event,
@@ -234,7 +234,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		{
 		case EVENT_TIMER_TICK:
 	        
-	        //Equations de mouvement
+	        // Equations de mouvement
 	        Matrice(); 
 	        currentTIME=currentTIME+deltaT; 
 	        posX=Vx0*currentTIME+posX0;
@@ -245,7 +245,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 	        {
 	        	if (Mat[i][j]!=fond)
 	        		{
-	        			/*Mat[i][j]=fond;*/
+	        			/* Mat[i][j]=fond; */
 	        			for (a=j; a>1; a--)
 	        			{
 	        				Mat[i][j]=Mat[i][j-1];
@@ -270,7 +270,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 	        SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_CTRL_MODE,VAL_HOT); 
 	        SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_CTRL_MODE,VAL_HOT); 
 
-//idée de collision -------------------------------------------------------------------------	        	
+// Idee de collision -------------------------------------------------------------------------	        	
 	        /*if ((posX<width)&&(posY<height))
 	        {
 	        	/*if (distance())
@@ -293,7 +293,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 }
 
 //--------------------------------------------------------------------------------------------   
-//Nos FONCTIONS  
+// Nos FONCTIONS  
 //--------------------------------------------------------------------------------------------   
 
 
@@ -325,7 +325,7 @@ void Matrice(void)
 	}
 }	 
 
-//idée de collision -------------------------------------------------------------------------	  
+// Idee de collision -------------------------------------------------------------------------	  
 /*int distance()
 {   (posX*posX+posY*posY)
 } */
