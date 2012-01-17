@@ -40,14 +40,15 @@ void Matrice(void);
 void DrawBirds(int coul);
 int SCOREconstruct(int bt, int bs);
 int SCOREoiseau(int i, int j, int k);
-
+int PileOuFace(void);
+int Hauteur(int i); //rand()%(Hauteur + 1)
 
 //----------------------------------------------------------------------------------------------------
 //VARIABLES GLOBALES
 int posX0, posY0, debutX;
 int NbrO; 
 float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
-int posX[3], posY[3]; //2ème oiseau // faire l'allocation dynamique
+int posX[3], posY[3]; //2eme oiseau // faire l'allocation dynamique
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
 int color, colorCOCH, colorN, colorV, colorB, fond ,typeTOUR; 
@@ -79,7 +80,7 @@ int main (int argc, char *argv[])
 {
 	time_t date;
 
-	int i, k, j, PileOuFace, Hauteur, NbrC, NbrCp; 
+	int i, k, j, NbrC, NbrCp; 
 	
 	if (InitCVIRTE (0, argv, 0) == 0)	/* Needed if linking in external compiler; harmless otherwise */
 		return -1;	/* out of memory */
@@ -132,12 +133,10 @@ int main (int argc, char *argv[])
 
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
 	
-	//fonction aléatoire
+	//fonction aleatoire
 	srand(time(&date));
-	Hauteur = rand()%14; //0-14
-	PileOuFace = rand()%2; //0-1 
 	
-	//dessin de l'arrière plan
+	//dessin de l'arriere plan
 	
 	for (j=0; j<Nby; j++)
 	{
@@ -156,10 +155,10 @@ int main (int argc, char *argv[])
 	//generation aleatoire de la map 
 	for (i=debutX; i<Nbx; i++)
 	{
-		if (PileOuFace==1)
+		if (PileOuFace()==1)
 		{
-			tailleTOUR=Hauteur; 
-			if (PileOuFace==1)
+			tailleTOUR=Hauteur(Nby); 
+			if (PileOuFace()==1)
 			{
 				typeTOUR=beton;
 			}
@@ -183,9 +182,9 @@ int main (int argc, char *argv[])
 				{
 					if (Mat [i][j]==fond)
 					{
-						if ((j==Nby-1)/*posé au sol||(Mat[i][j+1]==typeTOUR)/*posé sur la tour*//*)*/
+						if ((j==Nby-1)/*posï¿½ au sol||(Mat[i][j+1]==typeTOUR)/*posï¿½ sur la tour*//*)*/
 						/*{
-							if (PileOuFace==1)
+							if (PileOuFace()==1)
 							{
 								Mat [i][j]=colorCOCH;
 								NbrCp++;
@@ -194,7 +193,7 @@ int main (int argc, char *argv[])
 					}
 					if (Mat [i][j]==typeTOUR)
 					{
-						if (PileOuFace==1)
+						if (PileOuFace()==1)
 						{
 							Mat [i][j]=colorCOCH;
 							NbrCp++;	
@@ -669,6 +668,15 @@ void DrawBirds(int coul)
 	}
 }
 
+int PileOuFace(void)
+{
+	return rand()%2;
+}
+
+int Hauteur(int i)
+{
+	return rand()%i;
+}
 //-------------------------------   
 
 int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
@@ -679,7 +687,7 @@ int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5
 
 //-------------------------------  
 
-int SCOREconstruct(int bt, int bs)	  //nombre de béton, bois //score brique : béton (10) bois(5)  
+int SCOREconstruct(int bt, int bs)	  //nombre de bï¿½ton, bois //score brique : bï¿½ton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
 	return scoreS;
