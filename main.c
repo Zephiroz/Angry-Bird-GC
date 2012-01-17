@@ -32,6 +32,10 @@
 #define VALoisE 20
 #define VALbois 5
 #define VALbet 10
+
+#define Hauteur rand()%Nby
+#define Largeur rand()%(Nbx-debutX)
+#define PileOuFace rand()%2
 //----------------------------------------------------------------------------------------------------
 //PROTOTYPAGE 
 void DrawBird(int x, int y, int color);
@@ -40,8 +44,6 @@ void Matrice(void);
 void DrawBirds(int coul);
 int SCOREconstruct(int bt, int bs);
 int SCOREoiseau(int i, int j, int k);
-int PileOuFace(void);
-int Hauteur(int i); //rand()%(Hauteur + 1)
 
 //----------------------------------------------------------------------------------------------------
 //VARIABLES GLOBALES
@@ -155,10 +157,10 @@ int main (int argc, char *argv[])
 	//generation aleatoire de la map 
 	for (i=debutX; i<Nbx; i++)
 	{
-		if (PileOuFace()==1)
+		if (PileOuFace==1)
 		{
-			tailleTOUR=Hauteur(Nby); 
-			if (PileOuFace()==1)
+			tailleTOUR=Hauteur; 
+			if (PileOuFace==1)
 			{
 				typeTOUR=beton;
 			}
@@ -170,39 +172,37 @@ int main (int argc, char *argv[])
 			}
 		}
 	}
-	// génération aléatoire de la position du cochon
-	printf("nombre de cochons :\n");
+	// Génération aléatoire de la position du cochon
+	printf("Nombre de cochons :\n");
 	scanf("%d", &NbrC);
-	//recherche cochon on peut aussi la faire en fonction 
-	/*while(NbrCp<NbrC) 
+	// Recherche cochon on peut aussi la faire en fonction 
+	int PCx,PCy;
+	while(NbrCp<NbrC) 
 	{
-		for (i=debutX; i<Nbx; i++)
-			{
-				for (j=Nby-1; j>Nby-tailleTOUR; j--)
-				{
-					if (Mat [i][j]==fond)
-					{
-						if ((j==Nby-1)/*pos� au sol||(Mat[i][j+1]==typeTOUR)/*pos� sur la tour*//*)*/
-						/*{
-							if (PileOuFace()==1)
-							{
-								Mat [i][j]=colorCOCH;
-								NbrCp++;
-							}
-						}
-					}
-					if (Mat [i][j]==typeTOUR)
-					{
-						if (PileOuFace()==1)
-						{
-							Mat [i][j]=colorCOCH;
-							NbrCp++;	
-						}
-					}
-				}
-			}
-	}
-	*/
+        PCy=Hauteur;
+        PCy=Largeur;
+        if (Mat[PCx][PCy]!=colorCOCH)
+        {
+            for (i=PCy; i>NBy; i++)
+            {
+                PCy=i;
+                if (i+1>(NBy-1))
+                {
+                    NbrCp++;
+                    break;
+                } else {
+                    if (Mat[PCx][i+1]!=fond)
+                    {
+                        NbrCp++;
+                        break;
+                    }
+                }
+            }
+            Mat[PCx][PCy]=colorCOCH;
+        }
+    }
+	
+	
 	
 	for (i=0; i<tailleTOUR; i+=2)
 	{
@@ -218,7 +218,7 @@ int main (int argc, char *argv[])
 	SetCtrlVal (panelHandle, PANEL_SCORE, score);
 
 	
-	//Conna�tre la position de la souris sur le Canvas
+	//Connaitre la position de la souris sur le Canvas
 	//GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
 	
 	DrawBirds(color);   
@@ -230,7 +230,7 @@ int main (int argc, char *argv[])
 }
 
 //----------------------------------------------------------------------------------------------------  
-//Nos BOUTONS
+// Nos BOUTONS
 //---------------------------------------------------------------------------------------------------- 
 
 int CVICALLBACK ON_FIRE (int panel, int control, int event,
@@ -668,15 +668,7 @@ void DrawBirds(int coul)
 	}
 }
 
-int PileOuFace(void)
-{
-	return rand()%2;
-}
 
-int Hauteur(int i)
-{
-	return rand()%i;
-}
 //-------------------------------   
 
 int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
