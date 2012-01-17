@@ -18,6 +18,9 @@
 #define Nby	height/sizeCASE
 #define Xt 10 //abscisse de la tour (en matricielle)
 
+#define beton colorB
+#define bois colorV
+
 //----------------------------------------------------------------------------------------------------
 //PROTOTYPAGE 
 void DrawBird(int x, int y, int color);
@@ -26,17 +29,17 @@ void Matrice(void);
 
 //----------------------------------------------------------------------------------------------------
 //VARIABLES GLOBALES
-int posX, posY, posX0, posY0;
+int posX, posY, posX0, posY0, debutX;
 float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
-int color, colorN, colorV, colorB, fond; 
+int color, /*colorCOCH*/, colorN, colorV, colorB, fond, /*typeTOUR*/; 
 float Yt;
 int tailleTOUR; 
 
 int Mat[Nbx][Nby];//l'air de jeu
 
-//--Am�lioration
+/*--Am�lioration
 int light=0;
-//int posxmouse, posymouse, left, right, key;
+//int posxmouse, posymouse, left, right, key;*/
 
 //----------------------------------------------------------------------------------------------------
 //PROGRAMME 
@@ -46,7 +49,7 @@ static int panelHandle;
 int main (int argc, char *argv[])
 {
 
-	int i, j; 
+	int i, j, /*NbrC, NbrCp*/; 
 	
 	if (InitCVIRTE (0, argv, 0) == 0)	/* Needed if linking in external compiler; harmless otherwise */
 		return -1;	/* out of memory */
@@ -58,17 +61,16 @@ int main (int argc, char *argv[])
 	posY0=height-1-15;//- taille du cercle(carr�);
 	posX=posX0;
 	posY=posY0;
+	debutX=5
 	fond=VAL_YELLOW;
 	color = VAL_RED;
+	colorCOCH = VAL_RED;
 	colorN = VAL_BLACK;
 	colorV = VAL_GREEN;
 	colorB = VAL_BLUE;
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
 	
 	//dessin de l'arri�re plan
-
-	printf("taille de la tour :\n");
-	scanf("%d", &tailleTOUR);
 
 	for (j=0; j<Nby; j++)
 	{
@@ -83,6 +85,55 @@ int main (int argc, char *argv[])
 	}
 	// dessin de la tour
 	
+	
+	printf("taille de la tour :\n");
+	scanf("%d", &tailleTOUR);
+	/* 
+	//generation aleatoire de la map 
+	for (i=debutX; i<Nbx; i++)
+	{
+		if (random>0.5)
+		{
+			tailleTOUR=((int)15*Random); // si random appartient à 0-1
+			if (random>0.7)
+			{
+				typeTOUR=Beton;
+			}
+			else 
+				typeTOUR=bois;
+			for (j=0; j<tailleTOUR; i++)
+			{
+				Mat[i][Nby-1-j]=typeTOUR
+			}
+		}
+	}
+	// génération aléatoire de la position du cochon
+	printf("nombre de cochons :\n");
+	scanf("%d", &NbrC);
+	while
+	{
+		if (Mat [i][j]==fond)
+		{
+			if ((j==Nby-1)||(Mat[i][j+1]==typeTOUR))
+			{
+				if (random>0.7)
+				{
+					Mat [i][j]=colorCOCH;
+					NbrCp++;
+				}
+			}
+		}
+		if (Mat [i][j]==typeTOUR)
+		{
+			if (random>0.7)
+			{
+				Mat [i][j]=colorCOCH;
+				NbrCp++;	
+			}
+		}
+	}(NbrCp==NbrC)
+	
+	*/
 	for (i=0; i<tailleTOUR; i+=2)
 	{
 		if (light==1)
@@ -100,7 +151,7 @@ int main (int argc, char *argv[])
 		}
 		else
 			Mat[Xt][Nby-1-i]=colorB;  
-	}
+	}// a supprimer si l'autre est adopté
 
 	Matrice ();
 	
@@ -257,7 +308,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 	        			}
 	        			
 	        			Matrice();
-	        			DrawBird(posX, posY, fond);
+	        			DrawBird(posX, posY, Mat[i][j]);
 	        			
 	        			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0);
 	        			SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_CTRL_MODE,VAL_HOT);
