@@ -1,42 +1,78 @@
 [Project Header]
 Version = 500
 Platform Code = 4
-Pathname = "/g/Projet info/Angry birds.prj"
+Pathname = "/g/mardi/Nouveau dossier/Angry birds.prj"
 CVI Dir = "/c/cvi"
 VXIplug&play Framework Dir = "/C/VXIPNP/winnt"
-Number of Files = 2
+Number of Files = 5
 Sort Type = "No Sort"
 Target Type = "Executable"
 Flags = 16
 Drag Bar Left = 135
-Window Top = 71
-Window Left = 30
-Window Bottom = 373
-Window Right = 570
+Window Top = 55
+Window Left = 102
+Window Bottom = 357
+Window Right = 642
 
 [File 0001]
-File Type = "CSource"
-Path = "/g/Projet info/main.c"
+File Type = "Include"
+Path = "/g/mardi/Nouveau dossier/Option.h"
 Res Id = 1
 Exclude = False
-Disk Date = 3409576464
+Disk Date = 3409645738
+Project Flags = 0
+Window Top = 531
+Window Left = 270
+Window Height = 0
+Window Width = 0
+Source Window State = "1,19,19,19,9,13,9,0,3,89,0,0,0,0,0,25,16,0,19,14,"
+
+[File 0002]
+File Type = "CSource"
+Path = "/g/mardi/Nouveau dossier/main.c"
+Res Id = 2
+Exclude = False
+Disk Date = 3409668106
 Project Flags = 0
 Window Top = 23
 Window Left = 0
 Window Height = 0
 Window Width = 0
-Source Window State = "1,266,271,266,11,59,11,0,0,206,0,1,0,2,0,60,225,0,252,31,"
-Header Dependencies = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,"
+Source Window State = "1,467,471,471,0,14,15,0,0,206,0,0,0,0,0,60,620,0,650,13,"
 
-[File 0002]
+[File 0003]
 File Type = "User Interface Resource"
-Path = "/g/Projet info/Angry birds.uir"
-Res Id = 2
+Path = "/g/mardi/Nouveau dossier/Menu.uir"
+Res Id = 3
 Exclude = False
-Disk Date = 3409574172
+Disk Date = 3409663226
 Project Flags = 0
-Window Top = 91
-Window Left = 271
+Window Top = 574
+Window Left = -34
+Window Height = 400
+Window Width = 748
+
+[File 0004]
+File Type = "User Interface Resource"
+Path = "/g/mardi/Nouveau dossier/Option.uir"
+Res Id = 4
+Exclude = False
+Disk Date = 3409645738
+Project Flags = 0
+Window Top = 255
+Window Left = 216
+Window Height = 734
+Window Width = 472
+
+[File 0005]
+File Type = "User Interface Resource"
+Path = "/g/mardi/Nouveau dossier/Angry birds.uir"
+Res Id = 5
+Exclude = False
+Disk Date = 3409652628
+Project Flags = 0
+Window Top = 151
+Window Left = 483
 Window Height = 736
 Window Width = 1049
 
@@ -80,28 +116,7 @@ Scope = "Global To Project"
 DllName = ""
 
 [Included Headers]
-Header 0001 = "/c/cvi/include/cvirte.h"
-Header 0002 = "/c/cvi/include/cvidef.h"
-Header 0003 = "/c/cvi/include/userint.h"
-Header 0004 = "/g/Projet info/Angry birds.h"
-Header 0005 = "/c/cvi/include/ansi_c.h"
-Header 0006 = "/c/cvi/include/ansi/assert.h"
-Header 0007 = "/c/cvi/include/ansi/ctype.h"
-Header 0008 = "/c/cvi/include/ansi/errno.h"
-Header 0009 = "/c/cvi/include/ansi/float.h"
-Header 0010 = "/c/cvi/include/ansi/limits.h"
-Header 0011 = "/c/cvi/include/ansi/locale.h"
-Header 0012 = "/c/cvi/include/ansi/math.h"
-Header 0013 = "/c/cvi/include/ansi/setjmp.h"
-Header 0014 = "/c/cvi/include/ansi/signal.h"
-Header 0015 = "/c/cvi/include/ansi/stdarg.h"
-Header 0016 = "/c/cvi/include/ansi/stddef.h"
-Header 0017 = "/c/cvi/include/ansi/stdio.h"
-Header 0018 = "/c/cvi/include/ansi/stdlib.h"
-Header 0019 = "/c/cvi/include/ansi/string.h"
-Header 0020 = "/c/cvi/include/ansi/time.h"
-Header 0021 = "/c/cvi/include/utility.h"
-Max Header Number = 21
+Max Header Number = 0
 
 [Create Executable]
 Executable File = ""
