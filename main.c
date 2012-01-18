@@ -53,7 +53,7 @@ float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
 int posX[3], posY[3]; //2eme oiseau //
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
-int color, colorCOCH, colorN, colorV, colorB, fond ,typeTOUR; 
+int color, colorCOCH, colorR, colorN, colorY, colorV, colorB, fond ,typeTOUR; 
 float Yt;
 int tailleTOUR=5;
 int typeO;
@@ -132,13 +132,34 @@ int main (int argc, char *argv[])
 	posY[1]=posY0;
 	
 	debutX=5;
-	
-	color = VAL_RED;
-	colorN = VAL_BLACK; 
-	fond=VAL_YELLOW;
-	colorCOCH = VAL_RED;  
+//couleurs 
+	colorN = VAL_BLACK;
+	colorY = VAL_YELLOW;
+	colorR = VAL_RED;
+
 	colorV = VAL_GREEN;
 	colorB = VAL_BLUE;
+	
+	//determine de la couleur de la boule en fonction du type de boule
+	if (typeO==0)
+	{
+		color = VAL_ORANGE		
+	}
+	if (typeO==1)
+	{
+		color = VAL_RED		
+	}
+	if (typeO==2)
+	{
+		color = VAL_BLACK	
+	}
+
+	//choix du fond
+	fond=colorY;
+	
+	//choix du cochon
+	colorCOCH = colorR;  
+// fin des couleurs
 
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
 	
@@ -197,7 +218,9 @@ int main (int argc, char *argv[])
                 {
                     NbrCp++;
                     break;
-                } else {
+                } 
+                else 
+                {
                     if (Mat[PCx][i+1]!=fond)
                     {
                         NbrCp++;
@@ -210,7 +233,7 @@ int main (int argc, char *argv[])
     }
 	
 	
-	
+	/*
 	for (i=0; i<tailleTOUR; i+=2)
 	{
 			Mat[Xt][Nby-1-i]=colorV;  
@@ -219,7 +242,7 @@ int main (int argc, char *argv[])
 	{
 
 			Mat[Xt][Nby-1-i]=colorB;  
-	}
+	}*/
 	
 	Matrice ();
 	SetCtrlVal (panelHandle, PANEL_SCORE, score);
