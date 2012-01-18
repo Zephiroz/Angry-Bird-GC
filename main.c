@@ -328,7 +328,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			Vx02=V0*cos(alpha2*pi/180);
 			Vy02=-V0*sin(alpha2*pi/180);
 			
-			deltaT=5./(V0+1);
+			deltaT=sizeCASE/(V0+1);
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_INTERVAL, deltaT);  
 			currentTIME=0;
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 1);
@@ -635,7 +635,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				{
 					if (trace==0)
 						//ca marchait, fait chier
-						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
 						GetBitmapFromFile("fond.bmp", &bmp);
 						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
 						Matrice();
