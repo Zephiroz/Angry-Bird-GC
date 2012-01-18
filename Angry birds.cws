@@ -16,7 +16,7 @@ Drag Bar Left = 160
 Window Top = 30
 Window Left = 270
 Window Bottom = 854
-Window Right = 1587
+Window Right = 1576
 Maximized = False
 Maximized Children = True
 Max32 Number Of Errors = 20
@@ -50,13 +50,13 @@ Force Rebuild = False
 [File 0001]
 Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
 File Type = "CSource"
-Disk Date = 3409743080
+Disk Date = 3409746872
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = -16281
 Window Z-Order = 1
-Source Window State = "1,601,601,601,12,24,24,0,0,140,0,0,0,0,0,54,559,0,601,24,349,683,1,0,"
+Source Window State = "1,527,527,527,24,25,25,0,0,138,0,0,0,0,0,54,448,0,523,29,349,683,1,0,"
 
 [File 0002]
 Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
