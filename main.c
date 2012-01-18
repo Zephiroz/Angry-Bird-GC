@@ -69,7 +69,8 @@ int trace;
 int Mat[Nbx][Nby];//l'air de jeu
 
 //ce que je cherche : int indice[NbrO] 
-int * indice;
+int indice[3]={0,0,0};
+//int * indice;
 
 																	  
 //----------------------------------------------------------------------------------------------------
@@ -83,7 +84,9 @@ static int menu;
 int main (int argc, char *argv[])
 {
 	time_t date;
-
+	
+	int PCx,PCy;
+	
 	int i, k, j, NbrC, NbrCp; 
 	
 	if (InitCVIRTE (0, argv, 0) == 0)	/* Needed if linking in external compiler; harmless otherwise */
@@ -111,7 +114,7 @@ int main (int argc, char *argv[])
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
 	
-	//indice[0]=0;
+	//indice[0]=0; // déja initialisé
 	//indice[1]=0;
 	//indice[2]=0; 
 	
@@ -143,15 +146,15 @@ int main (int argc, char *argv[])
 	//determine de la couleur de la boule en fonction du type de boule
 	if (typeO==0)
 	{
-		color = VAL_ORANGE		
+		color = VAL_RED;		
 	}
 	if (typeO==1)
 	{
-		color = VAL_RED		
+		color = VAL_RED;		
 	}
 	if (typeO==2)
 	{
-		color = VAL_BLACK	
+		color = VAL_BLACK;	
 	}
 
 	//choix du fond
@@ -204,17 +207,18 @@ int main (int argc, char *argv[])
 	printf("Nombre de cochons :\n");
 	scanf("%d", &NbrC);
 	// Recherche cochon on peut aussi la faire en fonction 
-	int PCx,PCy;
-	while(NbrCp<NbrC) 
+	
+while(NbrCp<NbrC) 
 	{
         PCy=Hauteur;
-        PCy=Largeur;
+        PCx=Largeur;
         if (Mat[PCx][PCy]!=colorCOCH)
         {
-            for (i=PCy; i>NBy; i++)
+            for (i=PCy; i<Nby; i++)
             {
                 PCy=i;
-                if (i+1>(NBy-1))
+				printf("%d", NbrCp);
+                if (i+1>(Nby-1))
                 {
                     NbrCp++;
                     break;
@@ -230,7 +234,7 @@ int main (int argc, char *argv[])
             }
             Mat[PCx][PCy]=colorCOCH;
         }
-    }
+    }   
 	
 	
 	/*
@@ -285,14 +289,6 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 				a=0;
 				e=NbrO;
 			SCOREoiseau(n, a, e);
-			
-			
-			indice = malloc(NbrO*sizeof(int));
-			for (k=0; k<NbrO; k++)
-			{
-				*(indice+k)=0;
-			}
-			
 			
 			//calcule de deltaT
 			Vx0=V0*cos(alpha*pi/180)-vent;
@@ -567,7 +563,7 @@ int CVICALLBACK ON_MENU (int panel, int control, int event,
 int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
-		int i,j,a, indice, indice1, indice2; 
+		int i,j,a; 
 		int k;
 		switch (event)
 		{
@@ -580,6 +576,18 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						colorV=colorN;
 						colorB=colorN;
 					} */
+				//dessine le bon nombre de boule
+				if (NbrO==1)
+				{
+					indice[1]=1;
+					indice[2]=1;
+				}	
+				if (NbrO==2)
+				{
+					indice[2]=1;
+				}
+			
+			
 				currentTIME=currentTIME+deltaT; 
 				
 				//Trace ou pas ?
@@ -624,6 +632,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 								Mat[i][j]=Mat[i][j-1];
 								Mat[i][0]=fond;
 								j--;
+								indice[k]=1;
 								//*(indice+k)=1;
 								//indice[k]=1;
 								//*(indice+k)=1;
@@ -692,23 +701,23 @@ void DrawBirds(int coul)
 {
 	if (NbrO==1)
 	{
-		if ((*(indice)!=1) || (posX[0] <= width) || (posY[0] <= height))
+		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
 			DrawBird(posX[0], posY[0], coul);
 	}
 	if (NbrO==2)
 	{
-		if ((*(indice)!=1) || (posX[0] <= width) || (posY[0] <= height))
+		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
 			DrawBird(posX[0], posY[0], coul);
-		if ((*(indice+1)!=1) || (posX[1] <= width) || (posY[1] <= height))
+		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
 			DrawBird(posX[1], posY[1], coul);
 	}
 	if (NbrO==3)
 	{
-		if ((*(indice)!=1) || (posX[0] <= width) || (posY[0] <= height))
+		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
 			DrawBird(posX[0], posY[0], coul);
-		if ((*(indice+1)!=1) || (posX[1] <= width) || (posY[1] <= height))
+		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
 			DrawBird(posX[1], posY[1], coul);
-		if ((*(indice+2)!=1) || (posX[2] <= width) || (posY[2] <= height))
+		if ((indice[2]!=1) || (posX[2] <= width) || (posY[2] <= height))
 			DrawBird(posX[2], posY[2], coul);
 	}
 }
