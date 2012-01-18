@@ -8,6 +8,8 @@
 #include "Angry birds.h"
 #include <stdlib.h>
 #include <time.h>
+#include "Acceuil.h"
+#include "credits.h"
 
 
 //----------------------------------------------------------------------------------------------------
@@ -59,6 +61,8 @@ int tailleTOUR=5;
 int typeO;
 int bmp;
 
+int Niveau;
+
 int score;
 int scoreO;
 int scoreS;
@@ -80,7 +84,8 @@ int indice[3]={0,0,0};
 static int panelHandle;
 static int mode; 
 static int menu;
-
+static int accueil;  
+static int credits;
 
 int main (int argc, char *argv[])
 {
@@ -90,26 +95,34 @@ int main (int argc, char *argv[])
 	
 	int i, k, j, NbrC, NbrCp; 
 	
-	if (InitCVIRTE (0, argv, 0) == 0)	/* Needed if linking in external compiler; harmless otherwise */
-		return -1;	/* out of memory */
+				if (InitCVIRTE (0, argv, 0) == 0)	/* Needed if linking in external compiler; harmless otherwise */
+					return -1;	/* out of memory */
 	
-	if ((panelHandle = LoadPanel (0, "Angry birds.uir", PANEL)) < 0)
-		return -1;
+				if ((panelHandle = LoadPanel (0, "Angry birds.uir", PANEL)) < 0)
+					return -1;
 		
-	if ((mode = LoadPanel (0, "Option.uir", MODE)) < 0)
-		return -1;
+				if ((mode = LoadPanel (0, "Option.uir", MODE)) < 0)
+					return -1;
 	
-	if ((menu = LoadPanel (0, "Menu.uir", MENU)) < 0)
-		return -1;
+				if ((menu = LoadPanel (0, "Menu.uir", MENU)) < 0)
+					return -1;
+			
+				if ((accueil = LoadPanel (0, "Acceuil.uir", ACCUEIL)) < 0)
+					return -1;
+					
+				if ((credits = LoadPanel (0, "credits.uir", CREDITS)) < 0)
+					return -1;
 		
 	Cls();
+	
 	//initialisation numeric
 	vent = 0;
 	V0 = 50;
 	alpha = 45;
-	NbrO=1;
-	trace=0;
-	typeO=0;
+	NbrO = 1;
+	trace = 0;
+	typeO = 0;
+	Niveau = 1;
 	
 	// image de l'oiseau en fonction de l'oiseau
 				if (typeO==0)
@@ -257,18 +270,105 @@ while(NbrCp<NbrC)
 	//Connaitre la position de la souris sur le Canvas
 	//GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
 	
-	DrawBirds(color);   
+	DrawBirds(color); 
 	
-	DisplayPanel (panelHandle);
+	DisplayPanel (accueil);
+
 	
 	RunUserInterface ();
 	return 0;
 }
 
+
+//--------------------------------------------------------------------------------------------   
+//Nos FONCTIONS  
+//--------------------------------------------------------------------------------------------   
+
+
+void DrawBird(int x, int y, int coul)
+{
+	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
+	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
+	//CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); */
+	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, coul, VAL_ENTIRE_OBJECT, MakeRect(y,x,sizeCASE,sizeCASE) );
+	
+	//GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\fond.bmp", &color); 
+}
+
+//-------------------------------
+
+void Construction(int i, int j, int coul)
+{
+	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
+	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
+	CanvasDrawRect (panelHandle, PANEL_CANVAS, MakeRect(j*sizeCASE,i*sizeCASE,sizeCASE,sizeCASE), VAL_DRAW_FRAME_AND_INTERIOR); 
+}
+
+//-------------------------------
+
+void Matrice(void)
+{
+	int i, j;
+	for (j=0; j<Nby; j++)
+	{
+		for (i=0; i<Nbx; i++)
+		{
+			Construction(i, j, Mat [i][j]);
+			
+		}
+	}
+}	 
+
+//-------------------------------
+
+void DrawBirds(int coul)
+{
+	if (NbrO==1)
+	{
+		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
+			DrawBird(posX[0], posY[0], coul);
+	}
+	if (NbrO==2)
+	{
+		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
+			DrawBird(posX[0], posY[0], coul);
+		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
+			DrawBird(posX[1], posY[1], coul);
+	}
+	if (NbrO==3)
+	{
+		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
+			DrawBird(posX[0], posY[0], coul);
+		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
+			DrawBird(posX[1], posY[1], coul);
+		if ((indice[2]!=1) || (posX[2] <= width) || (posY[2] <= height))
+			DrawBird(posX[2], posY[2], coul);
+	}
+}
+
+//-------------------------------   
+
+int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
+{
+	scoreO=scoreO-i*VALoisN-j*VALoisA-k*VALoisE;
+	return scoreO;
+}
+
+//-------------------------------  
+
+int SCOREconstruct(int bt, int bs)	  //nombre de bï¿½ton, bois //score brique : bï¿½ton (10) bois(5)  
+{
+	scoreS=scoreS+bt*VALbet+bs*VALbois;
+	return scoreS;
+}
+
+
 //----------------------------------------------------------------------------------------------------  
 // Nos BOUTONS
 //---------------------------------------------------------------------------------------------------- 
 
+
+//----------- FIRE ----------------------------------------------------------------------------- 
 int CVICALLBACK ON_FIRE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -341,264 +441,8 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 	return 0;
 }
 
-//----------------------------------------------------------------------------------------------------  
 
-int CVICALLBACK ON_QUITTER (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			QuitUserInterface (0);
-			break;
-		}
-	return 0;
-}
-
-//----------------------------------------------------------------------------------------------------  
-
-int CVICALLBACK ON_ANGLE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			GetCtrlVal (panelHandle, PANEL_Angle, &alpha);
-			break;
-		}
-	return 0;
-}
-
-//----------------------------------------------------------------------------------------------------  
-
-int CVICALLBACK ON_PUISSANCE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			GetCtrlVal (panelHandle, PANEL_PUISSANCE, &V0);
-			//calcule de VoX &VoY		
-
-			break;
-		}
-	return 0;
-}
-
-//----------------------------------------------------------------------------------------------------  
-
-int CVICALLBACK ON_QUITTE (int panel, int event, void *callbackData,
-		int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_GOT_FOCUS:
-
-			break;
-		case EVENT_LOST_FOCUS:
-
-			break;
-		case EVENT_CLOSE:
-			QuitUserInterface (0);
-			break;
-		}
-	return 0;
-}
-
-int CVICALLBACK ON_EXIT (int panel, int event, void *callbackData,
-		int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_GOT_FOCUS:
-
-			break;
-		case EVENT_LOST_FOCUS:
-
-			break;
-		case EVENT_CLOSE:
-			QuitUserInterface (0);
-			break;
-		}
-	return 0;
-}
-
-int CVICALLBACK ON_QUMENU (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			HidePanel (menu); 
-			break;
-		}
-	return 0;
-}
-
-int CVICALLBACK ON_QUITTEROPTION (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			  HidePanel (mode);
-			break;
-		}
-	return 0;
-}
-
-
-int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
-		int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			  HidePanel (mode);
-			break;
-		}
-	return 0;
-}
-
-
-
-//----------------------------------------------------------------------------------------------------  
-
-int CVICALLBACK ON_LIGHT (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{   int i, j;
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			GetCtrlVal (mode, MODE_LUMIERE, &light);
-			if (light==1)
-							{
-								for (j=0; j<Nby; j++)
-								{
-									for (i=0; i<Nbx; i++)
-									{
-										fond=colorN;
-										colorCOCH = colorN;  
-										colorV = colorN;
-										colorB = colorN;
-									}
-								}
-
-							}
-			break;
-		}
-	return 0;
-}
-
-//----------------------------------------------------------------------------------------------------      
-
-int CVICALLBACK ON_AGRESSIVE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-		
-			GetCtrlVal (mode, MODE_Agressivite, &typeO);
-			
-			break;
-		}
-	return 0;
-}
-
-//----------------------------------------------------------------------------------------------------      
-
-int CVICALLBACK ON_NOMBRE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			GetCtrlVal (mode, MODE_NbreOiseau, &NbrO);
-	
-			break;
-		}
-	return 0;
-}
-
-//----------------------------------------------------------------------------------------------------  
-
-int CVICALLBACK ON_CONTROLE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			DisplayPanel (mode);
-		break;
-		}
-	return 0;
-}
-
-//---------------------------------------------------------------------------------------------------- 
-
-int CVICALLBACK ON_SCORE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			SetCtrlVal (mode, PANEL_SCORE, score);
-			break;
-		}
-	return 0;
-}
-
-//---------------------------------------------------------------------------------------------------- 
-
-int CVICALLBACK ON_MENU (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-		{
-		case EVENT_COMMIT:
-			DisplayPanel (menu);
-			break;
-		}
-	return 0;
-}
-
-//---------------------------------------------------------------------------------------------------- 
-
-int CVICALLBACK ON_VENT (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-	{
-		case EVENT_COMMIT:
-			GetCtrlVal (mode, MODE_VENT, &vent);
-			break;
-	}
-	return 0;
-}
-//C'est ici que sera le CALLBACK de Indicateur de vent
-//GetCtrlVal (panelHandle, MODE_vent, &vent)
-// Ce sera un float allant de 0 Ã  50 (ou30)
-
-//---------------------------------------------------------------------------------------------------- 
-
-//C'est ici que sera le CALLBACK de ActiveTRACE
-//GetCtrlVal (panelHandle, MODE_vent, &trace)
-// Ce sera un int vallant 0 (non) ou 1(oui)
-int CVICALLBACK ON_TRACE (int panel, int control, int event,
-		void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-	{
-		case EVENT_COMMIT:
-			GetCtrlVal (mode, MODE_Trace, &trace);
-			break;
-	}
-	return 0;
-}
-
-
-//---------------------------------------------------------------------------------------------------- 
+//-------------- TIMER ------------------------------------------------------------------------- 
 
 int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
@@ -710,97 +554,320 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 			
 		}  //switch
 		return 0;
-}//int
-
-//--------------------------------------------------------------------------------------------   
-//Nos FONCTIONS  
-//--------------------------------------------------------------------------------------------   
-
-//-------------------------------
-void DrawBird(int x, int y, int coul)
-{
-	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
-	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
-	//CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); */
-	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, coul, VAL_ENTIRE_OBJECT, MakeRect(y,x,sizeCASE,sizeCASE) );
-	
-	//GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\fond.bmp", &color); 
 }
 
-//-------------------------------
 
-void Construction(int i, int j, int coul)
+//----------- FERMER FENETRE -----------------------------------------------------------------------------   
+
+// Quitter Acceuil (user interface)
+int CVICALLBACK ON_QUITTE (int panel, int event, void *callbackData,
+		int eventData1, int eventData2)
 {
-	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
-	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
-	CanvasDrawRect (panelHandle, PANEL_CANVAS, MakeRect(j*sizeCASE,i*sizeCASE,sizeCASE,sizeCASE), VAL_DRAW_FRAME_AND_INTERIOR); 
-}
-
-//-------------------------------
-
-void Matrice(void)
-{
-	int i, j;
-	for (j=0; j<Nby; j++)
+	switch (event)
 	{
-		for (i=0; i<Nbx; i++)
+		case EVENT_GOT_FOCUS:
+
+			break;
+		case EVENT_LOST_FOCUS:
+
+			break;
+		case EVENT_CLOSE:
+			QuitUserInterface (0);
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ON_QUITTER (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			QuitUserInterface (0);
+			break;
+	}
+	return 0;
+}
+
+
+//Quitter Crédits (hide)
+int CVICALLBACK ON_QUITTERCREDITS (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			HidePanel (credits);
+			DisplayPanel (accueil);
+			break;
+	}
+	return 0;
+}
+
+
+//Quitter panelHandle (hide)
+int CVICALLBACK ON_QUITTERJEUX (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			HidePanel (panelHandle);
+			DisplayPanel (accueil);
+			break;
+	}
+	return 0;
+}
+
+
+//Quitter option de tir (hide)
+int CVICALLBACK ON_QUITTEROPTION (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
 		{
-			Construction(i, j, Mat [i][j]);
-			
+		case EVENT_COMMIT:
+			  HidePanel (mode);
+			  DisplayPanel (panelHandle);  
+			break;
 		}
-	}
-}	 
+	return 0;
+}
 
-//-------------------------------
-
-void DrawBirds(int coul)
+int CVICALLBACK ON_EXIT (int panel, int event, void *callbackData,
+		int eventData1, int eventData2)
 {
-	if (NbrO==1)
-	{
-		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
-			DrawBird(posX[0], posY[0], coul);
-	}
-	if (NbrO==2)
-	{
-		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
-			DrawBird(posX[0], posY[0], coul);
-		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
-			DrawBird(posX[1], posY[1], coul);
-	}
-	if (NbrO==3)
-	{
-		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
-			DrawBird(posX[0], posY[0], coul);
-		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
-			DrawBird(posX[1], posY[1], coul);
-		if ((indice[2]!=1) || (posX[2] <= width) || (posY[2] <= height))
-			DrawBird(posX[2], posY[2], coul);
-	}
+	switch (event)
+		{
+		case EVENT_GOT_FOCUS:
+
+			break;
+		case EVENT_LOST_FOCUS:
+
+			break;
+		case EVENT_CLOSE:
+			HidePanel (mode);
+			DisplayPanel (panelHandle);
+			break;
+		}
+	return 0;
 }
 
 
-//-------------------------------   
-
-int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
+//Quitter Menu (hide)
+int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
+		int eventData1, int eventData2)
 {
-	scoreO=scoreO-i*VALoisN-j*VALoisA-k*VALoisE;
-	return scoreO;
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			  HidePanel (menu);
+			  DisplayPanel (panelHandle);
+			break;
+		}
+	return 0;
 }
 
-//-------------------------------  
-
-int SCOREconstruct(int bt, int bs)	  //nombre de bï¿½ton, bois //score brique : bï¿½ton (10) bois(5)  
+ int CVICALLBACK ON_QUMENU (int panel, int control, int event,
+	void *callbackData, int eventData1, int eventData2)
 {
-	scoreS=scoreS+bt*VALbet+bs*VALbois;
-	return scoreS;
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			HidePanel (menu);
+			DisplayPanel (panelHandle); 
+			break;
+		}
+	return 0;
+}
+
+//----------- Display Panel -----------------------------------------------------------------------------  
+ 
+ int CVICALLBACK ON_CONTROLE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			DisplayPanel (mode);
+			HidePanel (panelHandle); 
+		break;
+		}
+	return 0;
+}
+ 
+ int CVICALLBACK ON_MENU (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			DisplayPanel (menu);
+			HidePanel (panelHandle);
+			break;
+		}
+	return 0;
+}
+
+ int CVICALLBACK ON_JOUER (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			DisplayPanel (panelHandle);
+			HidePanel (accueil);
+			break;
+	}
+	return 0;
+}
+
+ int CVICALLBACK ON_CREDIT (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			HidePanel (accueil);
+			DisplayPanel (credits);
+			break;
+	}
+	return 0;
+}
+
+ //----------- Get & Set CtrlVal ----------------------------------------------------------------------------- 
+
+//GetCtrlVal
+ int CVICALLBACK ON_NIVEAU (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			GetCtrlVal (accueil, ACCUEIL_NIVEAU, &Niveau);
+			break;
+	}
+	return 0;
+}
+ 
+int CVICALLBACK ON_LIGHT (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{   int i, j;
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			GetCtrlVal (mode, MODE_LUMIERE, &light);
+			if (light==1)
+							{
+								for (j=0; j<Nby; j++)
+								{
+									for (i=0; i<Nbx; i++)
+									{
+										fond=colorN;
+										colorCOCH = colorN;  
+										colorV = colorN;
+										colorB = colorN;
+									}
+								}
+
+							}
+			break;
+		}
+	return 0;
+}
+ 
+int CVICALLBACK ON_VENT (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			GetCtrlVal (mode, MODE_VENT, &vent);
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ON_TRACE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			GetCtrlVal (mode, MODE_Trace, &trace);
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ON_NOMBRE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			GetCtrlVal (mode, MODE_NbreOiseau, &NbrO);
+	
+			break;
+		}
+	return 0;
+}
+
+int CVICALLBACK ON_AGRESSIVE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+		
+			GetCtrlVal (mode, MODE_Agressivite, &typeO);
+			
+			break;
+		}
+	return 0;
+}
+
+int CVICALLBACK ON_PUISSANCE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			GetCtrlVal (panelHandle, PANEL_PUISSANCE, &V0);
+
+			break;
+		}
+	return 0;
+}
+
+int CVICALLBACK ON_ANGLE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			GetCtrlVal (panelHandle, PANEL_Angle, &alpha);
+			break;
+		}
+	return 0;
+}
+
+//SetCtrlVal
+
+int CVICALLBACK ON_SCORE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			SetCtrlVal (mode, PANEL_SCORE, score);
+			break;
+		}
+	return 0;
 }
 
 
-/*int indice(int *p)
-{
 
-}*/
-//-------------------------------  
-//int RechercheCochon(int i, int j)
 
 
