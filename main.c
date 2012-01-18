@@ -428,11 +428,17 @@ void CalcVx0Vy0 (void)
 
 //-------------------------------
 void DesActivation (int i) // pas complet : il manque des numerique
-{
+{	
+	//panelHandle
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, i);
 	SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,i);
 	SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,i); 
 	SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,i);
+	//Option
+	SetCtrlAttribute (mode, MODE_NbreOiseau, ATTR_DIMMED,i);
+	SetCtrlAttribute (mode, MODE_Agressivite, ATTR_DIMMED,i);
+	SetCtrlAttribute (mode, MODE_VENT, ATTR_DIMMED,i);
+	SetCtrlAttribute (mode, MODE_Trace, ATTR_DIMMED,i);
 }
 
 
@@ -479,13 +485,6 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		{
 			case EVENT_TIMER_TICK:
 		
-				/*if (light==1)
-					{
-						fond=colorN;
-						colorCOCH=colorN;
-						colorV=colorN;
-						colorB=colorN;
-					} */
 				//dessine le bon nombre de boule
 				if (NbrO==1)
 				{
