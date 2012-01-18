@@ -9,7 +9,7 @@ IVI Standard Root Dir = "/C/Program Files/IVI Foundation/IVI"
 VXIplug&play Framework Dir = "/C/Program Files/IVI Foundation/VISA/winnt"
 IVI Standard Root 64-bit Dir = "/C/Program Files/IVI Foundation/IVI"
 VXIplug&play Framework 64-bit Dir = "/C/Program Files/IVI Foundation/VISA/win64"
-Number of Files = 5
+Number of Files = 6
 Target Type = "Executable"
 Flags = 16
 Copied From Locked InstrDrv Directory = False
@@ -72,6 +72,17 @@ Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
 Exclude = False
 Project Flags = 0
 Folder = "User Interface Files"
+
+[File 0006]
+File Type = "User Interface Resource"
+Res Id = 6
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Acceuil.uir"
+Path = "/c/Users/Dorian/Desktop/Projet info/Acceuil.uir"
+Exclude = False
+Project Flags = 0
+Folder = "Not In A Folder"
 
 [Folders]
 Instrument Files Folder Not Added Yet = True
