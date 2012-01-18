@@ -172,7 +172,7 @@ void Construction(int i, int j, int coul)
 
 void DrawBack(void)
 {
-	GetBitmapFromFile("fond.bmp", &bmp);
+	GetBitmapFromFile("VABfond.bmp", &bmp);
 	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
 }
 // -------------------------------
