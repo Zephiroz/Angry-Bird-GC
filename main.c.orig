@@ -211,7 +211,11 @@ void SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(
 
 //-------------------------------  
 
+<<<<<<< HEAD
+void SCOREconstruct(int bt, int bs)	  //nombre de bÃ©ton, bois //score brique : beton (10) bois(5)  
+=======
 void SCOREconstruct(int bt, int bs)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
+>>>>>>> Dorian
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
 }
@@ -377,7 +381,11 @@ void AffichageEcran (void)
 
 //-------------------------------
 
-void Score(void) // Pas complet : depend que SCOREoiseau
+<<<<<<< HEAD
+void Score(void) // pas complet : dÃ©pend que SCOREoiseau
+=======
+void Score(void) // pas complet : dépend que SCOREoiseau
+>>>>>>> Dorian
 {
 	int n, a, e;
 	if (typeO==0)
@@ -466,7 +474,11 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_INTERVAL, deltaT); 
 			currentTIME=0;
 			
+<<<<<<< HEAD
+			DesActivation (1);    // (1 = activeTIMER & desactiveNUMERIC) / (0 = dÃ©sactiveTIMER & desactiveNUMERIC) 
+=======
 			DesActivation (1);    // (1 = activeTIMER & desactiveNUMERIC) / (0 = désactiveTIMER & desactiveNUMERIC) 
+>>>>>>> Dorian
 
 			break;
 		}
