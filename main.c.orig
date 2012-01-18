@@ -10,9 +10,9 @@
 #include <time.h>
 #include "Acceuil.h"
 #include "credits.h"
-//---------------- DEFINE -------------------------------------------------------------------------------
+// ---------------- DEFINE -------------------------------------------------------------------------------
 
-// Valeurs changeables : ------------------------------------------------
+// Valeurs variables : ------------------------------------------------
 
 #define Xt 10 // Abscisse de la tour (en matricielle)
 #define width 400
@@ -28,27 +28,43 @@
 #define g 9.8
 
 // Type de la tour : 
-#define beton colorB/*colorG*/
-#define bois colorV/*colorM*/
+#define colorBETON colorB/*colorG*/
+#define colorBOIS colorV/*colorM*/
+
 // Score :
 #define VALoisN 3
 #define VALoisA 5
 #define VALoisE 20
 #define VALbois 5
 #define VALbet 10
+<<<<<<< HEAD
+#define VALcochon 50
+=======
+// Materiau
+#define MATfond 0
+#define MATcoch 1
+#define MATbois 2
+#define MATbeton 3
+>>>>>>> Material
 // Mes fonctions aleatoires
 #define Hauteur rand()%Nby
 #define Largeur rand()%(Nbx-debutX)
 #define PileOuFace rand()%2
 
-//-------------- PROTOTYPAGE --------------------------------------------------------------------------
+// -------------- PROTOTYPAGE --------------------------------------------------------------------------
 
 void DrawBird(int x, int y, int color);
 void Construction(int i, int j, int coul);
 void Matrice(void); 
 void DrawBirds(int coul);
+<<<<<<< HEAD
+void SCOREconstruct(int bt, int bs, int co);
+=======
+void DrawBack(void);
 void SCOREconstruct(int bt, int bs);
+>>>>>>> Material
 void SCOREoiseau(int i, int j, int k);
+int MAT2Col(int mat);
 
 void initialisationVglobales (void);  
 void BitMapTypeOiseau(void); 
@@ -56,16 +72,23 @@ void DrawArrierePlan (void);
 void DrawTour (void);
 void DrawCOCH (void);  
 void AffichageEcran (void);
-void Score(void);
+void ScoreO(void);
 void CalcVx0Vy0 (void); 
 void DesActivation (int i);
+void IndicePresenceOiseau (void); 
+//void PresenceTrace (void); 
+void CoordonneeOiseauEnMat(void);
+int testCOLLISION (int i, int j); 
+void testStopOiseau (void); 
+int testCANVAS (void);
+void collision (void) 
 
-//----------------------------------------------------------------------------------------------------
-//VARIABLES GLOBALES
+// ----------------------------------------------------------------------------------------------------
+// VARIABLES GLOBALES
 
 // Variables recuperees avec Get
 int NbrO;
-int typeO;
+int typeO; 
 int Niveau; 
 int light; 
 int trace;
@@ -77,14 +100,20 @@ int score;
 
 // Variables normales
 int posX0, posY0, debutX;
-int posX[3], posY[3]; //pour 3 oiseaux // 
+<<<<<<< HEAD
+int posX[3], posY[3], posoldX[3], posoldY[3]; //pour 3 oiseaux // 
+=======
+int posX[3], posY[3]; // pour 3 oiseaux // 
+>>>>>>> Material
 int indice[3]={0,0,0};
 
 float Vx0, Vy0, currentTIME, deltaT;
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
 
-int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR; 
+// Voir define.materiaux pour les valeurs Arbitraires
+int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR;
+
 int Mat[Nbx][Nby];// L'aire de jeu
 
 int bmp;
@@ -95,7 +124,7 @@ int scoreO;
 int scoreS;
 
 
-//----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 // PROGRAMME 
 
 static int panelHandle;
@@ -136,22 +165,22 @@ int main (int argc, char *argv[])
 }
 
 
-//--------------------------------------------------------------------------------------------   
+// --------------------------------------------------------------------------------------------   
 // Nos FONCTIONS  
-//--------------------------------------------------------------------------------------------   
+// --------------------------------------------------------------------------------------------   
 
 
 void DrawBird(int x, int y, int coul)
 {
-	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
-	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
-	//CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); */
+	// SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
+	// SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
+	// CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); */
 	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, coul, VAL_ENTIRE_OBJECT, MakeRect(y,x,sizeCASE,sizeCASE) );
 	
-	//GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\fond.bmp", &color); 
+	// GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\fond.bmp", &color); 
 }
 
-//-------------------------------
+// -------------------------------
 
 void Construction(int i, int j, int coul)
 {
@@ -160,22 +189,52 @@ void Construction(int i, int j, int coul)
 	CanvasDrawRect (panelHandle, PANEL_CANVAS, MakeRect(j*sizeCASE,i*sizeCASE,sizeCASE,sizeCASE), VAL_DRAW_FRAME_AND_INTERIOR); 
 }
 
-//-------------------------------
+void DrawBack(void)
+{
+	GetBitmapFromFile("VABfond.bmp", &bmp);
+	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+}
+// -------------------------------
 
 void Matrice(void)
 {
 	int i, j;
+	if (light) DrawBack();
 	for (j=0; j<Nby; j++)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-			Construction(i, j, Mat [i][j]);
-			
+			if (Mat[i][j]==MATcoch)/*Does Nothng*/;
+			Construction(i, j, MAT2Col(Mat [i][j]));
 		}
 	}
 }	 
 
-//-------------------------------
+// -------------------------------
+
+int MAT2Col(int mat)
+{
+	switch(mat)
+	{
+		case MATfond:
+			if (light) return colorT;
+			else return colorN;
+		case MATbeton:
+			if (light) return colorBETON;
+			else return colorN;
+		case MATbois:
+			if (light) return colorBOIS;
+			else return colorN;
+		case MATcoch:
+			if (light) return colorCOCH;
+			else return colorCOCH;		
+		default:
+			if (light) return colorT;
+			else return colorT;
+	}
+}
+
+// -------------------------------
 
 void DrawBirds(int coul)
 {
@@ -202,27 +261,27 @@ void DrawBirds(int coul)
 	}
 }
 
-//-------------------------------   
+// -------------------------------   
 
-void SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
+void SCOREoiseau(int i, int j, int k) // Nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
 {
 	scoreO=scoreO-i*VALoisN-j*VALoisA-k*VALoisE;
 }
 
-//-------------------------------  
+// -------------------------------  
 
 <<<<<<< HEAD
-void SCOREconstruct(int bt, int bs)	  //nombre de bÃ©ton, bois //score brique : beton (10) bois(5)  
+void SCOREconstruct(int bt, int bs, int co)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
 =======
-void SCOREconstruct(int bt, int bs)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
->>>>>>> Dorian
+void SCOREconstruct(int bt, int bs)	  // Nombre de beton, bois // score brique : beton (10) bois(5)  
+>>>>>>> Material
 {
-	scoreS=scoreS+bt*VALbet+bs*VALbois;
+	scoreS=scoreS+bt*VALbet+bs*VALbois+co*VALcochon;
 }
 
-//------------------------------- 
-//------------------------------- 
-//------------------------------- 
+// ------------------------------- 
+// ------------------------------- 
+// ------------------------------- 
 
 void initialisationVglobales (void)
 {
@@ -232,6 +291,7 @@ void initialisationVglobales (void)
 	
 
 	vent = 0;
+	light = 1;
 	V0 = 50;
 	alpha = 45;
 	NbrO = 1;
@@ -270,25 +330,25 @@ void initialisationVglobales (void)
 	colorCOCH = colorR; 
 }
 
-//------------------------------- 
+// ------------------------------- 
 
 void BitMapTypeOiseau(void)
 {
-	if (typeO==0)
-	{
-		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
-	}
-	if (typeO==1)
-	{
-		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\agressivebird.bmp", &color);;		
-	}
-	if (typeO==2)
-	{
-		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
+	switch(typeO)
+	{	
+		case 0:
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\bebebird.bmp", &color);
+			break;
+		case 1:
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\agressivebird.bmp", &color);
+			break;
+		case 2:
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\poweredbird.bmp", &color);
+			break;
 	}	
 }
 
-//------------------------------- 
+// ------------------------------- 
 
 void DrawArrierePlan (void)
 {
@@ -297,12 +357,12 @@ void DrawArrierePlan (void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-				Mat [i][j]=fond;
+				Mat [i][j]=MATfond;
 		}
 	}	
 }
 
-//------------------------------- 
+// ------------------------------- 
 
 void DrawTour (void)
 {
@@ -314,10 +374,10 @@ void DrawTour (void)
 			tailleTOUR=Hauteur; 
 			if (PileOuFace==1)
 			{
-				typeTOUR=beton;
+				typeTOUR=MATbeton;
 			}
-			else 
-				typeTOUR=bois;
+			else
+				typeTOUR=MATbois;
 			for (j=0; j<tailleTOUR; j++)
 			{
 				Mat[i][Nby-j-1]=typeTOUR;
@@ -326,7 +386,7 @@ void DrawTour (void)
 	}	
 }
 
- //-------------------------------   
+// -------------------------------
 
 void DrawCOCH (void)
 
@@ -341,51 +401,47 @@ void DrawCOCH (void)
 	
 	while(NbrCp<NbrC) 
 	{
-        PCy=Hauteur;
-        PCx=Largeur;
-        if (Mat[PCx][PCy]!=colorCOCH)
-        {
-            for (i=PCy; i<Nby; i++)
-            {
-                PCy=i;
+		PCy=Hauteur;
+		PCx=Largeur;
+		if (Mat[PCx][PCy]!=MATcoch)
+		{
+			for (i=PCy; i<Nby; i++)
+			{
+				PCy=i;
 				
-                if (i+1>(Nby-1))
-                {
-                    NbrCp++;
-                    break;
-                } 
-                else 
-                {
-                    if (Mat[PCx][i+1]!=fond)
-                    {
-                        NbrCp++;
-                        break;
-                    }
-                }
-            }
-            Mat[PCx][PCy]=colorCOCH;
-        }
-    }   
+				if (i+1>(Nby-1))
+				{
+					NbrCp++;
+					break;
+				} 
+				else 
+				{
+					if (Mat[PCx][i+1])
+					{
+						NbrCp++;
+						break;
+					}
+				}
+			}
+			Mat[PCx][PCy]=MATcoch;
+		}
+	}   
 
 }
 
-//------------------------------- 
+// ------------------------------- 
 
 void AffichageEcran (void)
 {
 	SetCtrlVal (panelHandle, PANEL_SCORE, score); 
-	
+	//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); 
 	Matrice ();
 	DrawBirds(color); 
 }
 
-//-------------------------------
+// -------------------------------
 
-<<<<<<< HEAD
-void Score(void) // pas complet : dÃ©pend que SCOREoiseau
-=======
-void Score(void) // pas complet : dépend que SCOREoiseau
->>>>>>> Dorian
+void ScoreO(void) // Pas complet : depend que SCOREoiseau
 {
 	int n, a, e;
 	if (typeO==0)
@@ -407,9 +463,10 @@ void Score(void) // pas complet : dépend que SCOREoiseau
 		e=NbrO;
 	}
 	SCOREoiseau(n, a, e);
+	
 }
 
-//-------------------------------
+// -------------------------------
 
 void CalcVx0Vy0 (void)
 {
@@ -434,28 +491,238 @@ void CalcVx0Vy0 (void)
 	Vy02=-V0*sin(alpha2*pi/180);
 }
 
+<<<<<<< HEAD
 //-------------------------------
+
 void DesActivation (int i) // pas complet : il manque des numerique
+=======
+// -------------------------------
+void DesActivation (int i) // Pas complet : il manque des numerique
+>>>>>>> Material
 {	
-	//panelHandle
+	// panelHandle
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, i);
 	SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,i);
 	SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,i); 
 	SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,i);
-	//Option
+	// Option
 	SetCtrlAttribute (mode, MODE_NbreOiseau, ATTR_DIMMED,i);
 	SetCtrlAttribute (mode, MODE_Agressivite, ATTR_DIMMED,i);
 	SetCtrlAttribute (mode, MODE_VENT, ATTR_DIMMED,i);
 	SetCtrlAttribute (mode, MODE_Trace, ATTR_DIMMED,i);
 }
 
+//-------------------------------
 
+void IndicePresenceOiseau (void)
+{
+	if (NbrO==1)
+	{
+		indice[1]=1;
+		indice[2]=1;
+	}	
+	if (NbrO==2)
+	{
+		indice[2]=1;
+	}
+}
+
+//-------------------------------  
+
+/*void PresenceTrace (void)	 // a supprimer
+{
+	int k;
+	for (k=0; k<=NbrO-1; k++)
+	{
+		if (trace==0)
+		{	//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+			GetBitmapFromFile("fond.bmp", &bmp);
+			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+			Matrice();
+		}
+		// Si marche pas mettre en main
+		//CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
+					
+		//=> fond Blanc du Canvas = lumiere 
+		//CanvasClear (panelHandle, PANEL_CANVAS, VAL_ENTIRE_OBJECT);
+		
+		if (trace==1)
+			DrawBirds(VAL_WHITE);
+	}
+}	 */
+
+//-------------------------------  
+
+void CoordonneeOiseauEnMat(void)
+{
+	posX[0]=Vx0*currentTIME+posX0;
+	posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
+        
+	posX[1]=Vx01*currentTIME+posX0;
+	posY[1]=Vy01*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
+	        
+	posX[2]=Vx02*currentTIME+posX0;
+	posY[2]=Vy02*currentTIME+0.5*g*currentTIME*currentTIME+posY0;		
+}
+
+//-------------------------------  
+
+int testCOLLISION (int i, int j)   //1 il y a collision 
+{
+	if (Mat[i][j]!=fond)
+		return 1;
+	else 
+		return 0;
+} 
+
+void collision (void) // gestion de la collision
+	/*
+				DrawBirds(color); //premier dessin 
+				
+				
+				for (k=0;k<NbrO;k++)
+				{
+					if (testCANVAS()==1) //permutation a voir avec for
+					{
+					
+						i=posX[k]/sizeCASE;
+						j=posY[k]/sizeCASE;
+						if (testCOLLISION(i, j)==1) //s'il y a collision donc
+						{
+							//incrémentation du score
+							if (Mat[i][j]==béton)
+								SCOREconstruct(1,0,0);
+							if (Mat[i][j]==bois)
+								SCOREconstruct(0,1,0);
+							if (Mat[i][j]==colorCOCH)
+								SCOREconstruct(0,0,1);
+						
+							
+							 //Affichage ecran sinon à bien ordonner
+						}
+						else //=pas collision
+						{
+							Matrice();	
+						}
+						score=score + scoreS + scoreO;
+						SetCtrlVal (panelHandle, PANEL_SCORE, score);
+						
+					}//= pas dans le canvas
+				}// test effectuer pour chaque boule 
+				 
+				// Verifier la condition pcq bug apres que la premiere boule sorte de la map
+				  //if de condition
+				else
+				{
+					SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
+					SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,0);
+					SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,0); 
+					SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,0); 
+				}
+				*/
+				{			 // début fonction
+						int i, j;
+					
+						i=posX[k]/sizeCASE;
+						j=posY[k]/sizeCASE;
+						
+							//incrémentation du score
+							if (Mat[i][j]==béton)
+								SCOREconstruct(1,0,0);
+							if (Mat[i][j]==bois)
+								SCOREconstruct(0,1,0);
+							if (Mat[i][j]==colorCOCH)
+								SCOREconstruct(0,0,1);
+						
+							//effondrement strucuture
+							for (a=j; a>1; a--)
+							{
+								Mat[i][j]=Mat[i][j-1];
+								Mat[i][0]=fond;
+								j--;
+								indice[k]=1;
+							}
+							// déplacement strucutre (optionnel si tout marche)
+						
+						DesActivation(0);
+						GetBitmapFromFile("fond.bmp", &bmp);
+						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						Matrice(); //reprise strucuture
+						
+					/*	for (i=0; i<Nbx; i++)	  // à effacer surement
+						{
+							for(j=0; j<Nby; j++)
+							{
+								if (Mat[i][j]==1)//collision
+								{
+									if (Mat[i][j+1]==0) //fond
+									{
+										Mat[i][j+1]=1; //strucuture
+										MatJeu[i][j]=0;
+										scores=score+50;
+										i=0;
+										j=0;
+										
+									}	
+										
+								}
+							}
+						} */
+					
+						
+					}else
+					{
+						if (Mat[posX/sizeCASE][posY/sizeCASE]==2) //out of map ??
+							{
+								DesActivation[0]
+							}
+					}
+//------------------------------- 
+
+int testCANVAS (void)
+{
+	if (	((posX[0] <= width) || (posY[0] <= height)) ||
+			((posX[1] <= width) || (posY[1] <= height)) ||
+			((posX[2] <= width) || (posY[2] <= height))	)
+		return 1;
+	else 
+		return 0;
+}
+
+//------------------------------- 
+
+<<<<<<< HEAD
+void testStopOiseau (void)
+{
+	int k;
+	for (k=0; k<NbrO; k++)
+	{
+		if (testCOLLISION(posoldX[k]/sizeCASE, posoldY[k]/sizeCASE)=1)
+		{
+			posX[k]=posold[k];
+			posY[k]=posold[k];
+		}
+		else
+			CoordonneeOiseauEnMat();
+		if (testCANVAS()==0)
+		{	
+			posX[k]=posoldX[k];
+			posY[k]=posoldY[k];
+		}else
+		//test sur k ?
+			CoordonneeOiseauEnMat();
+	}
+} 
+				
 //----------------------------------------------------------------------------------------------------  
+=======
+// ----------------------------------------------------------------------------------------------------  
+>>>>>>> Material
 // Nos BOUTONS
-//---------------------------------------------------------------------------------------------------- 
+// ---------------------------------------------------------------------------------------------------- 
 
 
-//----------- FIRE ----------------------------------------------------------------------------- 
+// ----------- FIRE ----------------------------------------------------------------------------- 
 int CVICALLBACK ON_FIRE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -465,20 +732,16 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 		
 			BitMapTypeOiseau();
 			
-			Score(); 
+			ScoreO(); 
 		
-			CalcVx0Vy0 ();  // vitesse & angle initiaux de chaque oiseau
+			CalcVx0Vy0 ();  // Vitesse & angle initiaux de chaque oiseau
 			
 			deltaT=5./(V0+1);
 			
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_INTERVAL, deltaT); 
 			currentTIME=0;
 			
-<<<<<<< HEAD
-			DesActivation (1);    // (1 = activeTIMER & desactiveNUMERIC) / (0 = dÃ©sactiveTIMER & desactiveNUMERIC) 
-=======
-			DesActivation (1);    // (1 = activeTIMER & desactiveNUMERIC) / (0 = désactiveTIMER & desactiveNUMERIC) 
->>>>>>> Dorian
+			DesActivation (1);	// (1 = activeTIMER & desactiveNUMERIC) / (0 = désactiveTIMER & desactiveNUMERIC) 
 
 			break;
 		}
@@ -486,7 +749,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 }
 
 
-//-------------- TIMER ------------------------------------------------------------------------- 
+// -------------- TIMER ------------------------------------------------------------------------- 
 
 int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
@@ -497,7 +760,24 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		{
 			case EVENT_TIMER_TICK:
 		
-				//dessine le bon nombre de boule
+<<<<<<< HEAD
+				///optionnel
+				//PresenceTrace (); 
+				
+				///optionnel
+				IndicePresenceOiseau (); //determine l'indice de la case k a partir du quel sera determiner quelle boule dessiner
+				
+				// temps qui passe
+				currentTIME=currentTIME+deltaT; 
+				
+				// calcul des nouvelles positions
+				
+				testStopOiseau ();	//if oiseau k à une collision alors : posX[k]=posX0; posY[k]=posY0, sinon détermine equation mouvement normal
+				
+				//sauvegarde des anciennes position
+				for (k=0;k<NbrO;k++)
+=======
+				// Dessine le bon nombre de boule
 				if (NbrO==1)
 				{
 					indice[1]=1;
@@ -511,19 +791,18 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 			
 				currentTIME=currentTIME+deltaT; 
 				
-				//Trace ou pas ?
+				// Trace ou pas ?
 				for (k=0; k<=NbrO-1; k++)
 				{
 					if (trace==0)
-						//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
-						GetBitmapFromFile("fond.bmp", &bmp);
-						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						// CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						DrawBack();
 						Matrice();
 					// Si marche pas mettre en main
-						//CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
+						// CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
 						
-						//=> fond Blanc du Canvas = lumiere 
-						//CanvasClear (panelHandle, PANEL_CANVAS, VAL_ENTIRE_OBJECT);
+						// => fond Blanc du Canvas = lumiere 
+						// CanvasClear (panelHandle, PANEL_CANVAS, VAL_ENTIRE_OBJECT);
 					
 					if (trace==1)
 						DrawBirds(VAL_WHITE);
@@ -532,10 +811,10 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				// Equations de mouvement
 				posX[0]=Vx0*currentTIME+posX0;
 				posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
-        
+		
 				posX[1]=Vx01*currentTIME+posX0;
 				posY[1]=Vy01*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
-	        
+			
 				posX[2]=Vx02*currentTIME+posX0;
 				posY[2]=Vy02*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
 				
@@ -544,31 +823,31 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				if (	((posX[0] <= width) || (posY[0] <= height)) ||
 					((posX[1] <= width) || (posY[1] <= height)) ||
 					((posX[2] <= width) || (posY[2] <= height))	)
-				{// Verifier la condition pcq bug apres que la premiere boule sorte de la map
+				{// Verifier la condition pcQ bug apres Que la premiere boule sorte de la map
 					
 					for (k=0;k<=NbrO-1;k++)
 					{
 						i=posX[k]/sizeCASE;
 						j=posY[k]/sizeCASE;
-						if (Mat[i][j]==fond)  // Pb de taille 
+						if (Mat[i][j]==MATfond)  // Pb de taille 
 							SCOREconstruct(0,0);
 						// Collision
-						if (Mat[i][j]!=fond)
+						if (Mat[i][j])
 						{
-							if (Mat[i][j]==beton)
+							if (Mat[i][j]==MATbeton)
 								SCOREconstruct(1, 0);
-							if (Mat[i][j]==bois)
+							if (Mat[i][j]==MATbois)
 								SCOREconstruct(0, 1);
 
 							for (a=j; a>1; a--)
 							{
 								Mat[i][j]=Mat[i][j-1];
-								Mat[i][0]=fond;
+								Mat[i][0]=MATfond;
 								j--;
 								indice[k]=1;
-								//*(indice+k)=1;
-								//indice[k]=1;
-								//*(indice+k)=1;
+								// *(indice+k)=1;
+								// indice[k]=1;
+								// *(indice+k)=1;
 							}
 							Matrice();
 						} 
@@ -577,23 +856,42 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						
 					}
 
-				}  //if de condition
+				}  // if de condition
 				else
+>>>>>>> Material
 				{
-					SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
-					SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,0);
-					SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,0); 
-					SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,0); 
+					posoldX[k]=posX[k];
+					posoldY[k]=posY[k];
 				}
+				  
+				
+				//Rechargement du fond
+				GetBitmapFromFile("fond.bmp", &bmp);
+				CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+				
+				if (testCOLLISION==1)
+					collision()
+				
+				// Rechargement structure
+				Matrice();
+				
+						// Dessin Oiseau
+				DrawBirds(posX, posY, color);
+				if (trace ==1)
+					DrawBirds(posoldX, posoldY, VAL_WHITE);
 				
 			break;
 			
-		}  //switch
+<<<<<<< HEAD
+		}  //fin switch actif ou pas
+=======
+		}  // switch
+>>>>>>> Material
 		return 0;
-}
+}//fin timer
 
 
-//----------- FERMER FENETRE -----------------------------------------------------------------------------   
+// ----------- FERMER FENETRE -----------------------------------------------------------------------------   
 
 // Quitter Acceuil (user interface)
 int CVICALLBACK ON_QUITTE (int panel, int event, void *callbackData,
@@ -627,7 +925,7 @@ int CVICALLBACK ON_QUITTER (int panel, int control, int event,
 }
 
 
-//Quitter Credits (hide)
+// Quitter Credits (hide)
 int CVICALLBACK ON_QUITTERCREDITS (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -642,7 +940,7 @@ int CVICALLBACK ON_QUITTERCREDITS (int panel, int control, int event,
 }
 
 
-//Quitter panelHandle (hide)
+// Quitter panelHandle (hide)
 int CVICALLBACK ON_QUITTERJEUX (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -657,7 +955,7 @@ int CVICALLBACK ON_QUITTERJEUX (int panel, int control, int event,
 }
 
 
-//Quitter option de tir (hide)
+// Quitter option de tir (hide)
 int CVICALLBACK ON_QUITTEROPTION (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -718,7 +1016,7 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	return 0;
 }
 
-//----------- DISPLAY PANEL -----------------------------------------------------------------------------  
+// ----------- DISPLAY PANEL -----------------------------------------------------------------------------  
  
  int CVICALLBACK ON_CONTROLE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
@@ -761,12 +1059,12 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	
 			DrawArrierePlan ();
 
-			DrawTour ();  // aleatoire
+			DrawTour ();  // Aleatoire
 	
-			DrawCOCH ();  // aleatoire
+			DrawCOCH ();  // Aleatoire
 	
 			AffichageEcran ();
-			//-----------------------------------------------
+			// -----------------------------------------------
 			
 			HidePanel (accueil);
 			DisplayPanel (panelHandle);
@@ -788,9 +1086,9 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	return 0;
 }
 
- //----------- Get & Set CtrlVal ----------------------------------------------------------------------------- 
+ // ----------- Get & Set CtrlVal ----------------------------------------------------------------------------- 
 
-//GetCtrlVal
+// GetCtrlVal
  int CVICALLBACK ON_NIVEAU (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -805,25 +1103,13 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
  
 int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
-{   int i, j;
+{   int i, j, bmp;
 	switch (event)
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (mode, MODE_LUMIERE, &light);
-			if (light==1)
-							{
-								for (j=0; j<Nby; j++)
-								{
-									for (i=0; i<Nbx; i++)
-									{
-										fond=colorN;
-										colorCOCH = colorN;  
-										colorV = colorN;
-										colorB = colorN;
-									}
-								}
-
-							}
+			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); // WHAT WHAT WHAT ??
+			Matrice();
 			break;
 		}
 	return 0;
@@ -905,7 +1191,7 @@ int CVICALLBACK ON_ANGLE (int panel, int control, int event,
 	return 0;
 }
 
-//SetCtrlVal
+// SetCtrlVal
 
 int CVICALLBACK ON_SCORE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
