@@ -217,7 +217,7 @@ while(NbrCp<NbrC)
             for (i=PCy; i<Nby; i++)
             {
                 PCy=i;
-				printf("%d", NbrCp);
+				
                 if (i+1>(Nby-1))
                 {
                     NbrCp++;
@@ -526,7 +526,7 @@ int CVICALLBACK ON_SCORE (int panel, int control, int event,
 	switch (event)
 		{
 		case EVENT_COMMIT:
-			SetCtrlVal (panelHandle, PANEL_SCORE, score);
+			SetCtrlVal (mode, PANEL_SCORE, score);
 			break;
 		}
 	return 0;
@@ -548,6 +548,17 @@ int CVICALLBACK ON_MENU (int panel, int control, int event,
 
 //---------------------------------------------------------------------------------------------------- 
 
+int CVICALLBACK ON_VENT (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			GetCtrlVal (mode, MODE_VENT, &vent);
+			break;
+	}
+	return 0;
+}
 //C'est ici que sera le CALLBACK de Indicateur de vent
 //GetCtrlVal (panelHandle, MODE_vent, &vent)
 // Ce sera un float allant de 0 à 50 (ou30)
@@ -557,6 +568,18 @@ int CVICALLBACK ON_MENU (int panel, int control, int event,
 //C'est ici que sera le CALLBACK de ActiveTRACE
 //GetCtrlVal (panelHandle, MODE_vent, &trace)
 // Ce sera un int vallant 0 (non) ou 1(oui)
+int CVICALLBACK ON_TRACE (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			GetCtrlVal (mode, MODE_Trace, &trace);
+			break;
+	}
+	return 0;
+}
+
 
 //---------------------------------------------------------------------------------------------------- 
 
@@ -618,8 +641,9 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 					{
 						i=posX[k]/sizeCASE;
 						j=posY[k]/sizeCASE;
-						if (Mat[i][j]==fond)
+						if (Mat[i][j]==fond)  //pb de taille 
 							SCOREconstruct(0,0);
+						//collision
 						if (Mat[i][j]!=fond)
 						{
 							if (Mat[i][j]==beton)
@@ -746,4 +770,5 @@ int SCOREconstruct(int bt, int bs)	  //nombre de b�ton, bois //score brique : 
 }*/
 //-------------------------------  
 //int RechercheCochon(int i, int j)
+
 
