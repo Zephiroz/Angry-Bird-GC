@@ -28,8 +28,9 @@
 #define g 9.8
 
 // Type de la tour : 
-#define beton colorB/*colorG*/
-#define bois colorV/*colorM*/
+#define colorBETON colorB/*colorG*/
+#define colorBOIS colorV/*colorM*/
+
 // Score :
 #define VALoisN 3
 #define VALoisA 5
@@ -37,7 +38,10 @@
 #define VALbois 5
 #define VALbet 10
 // Materiau
-
+#define MATvide 0
+#define MATcoch 1
+#define MATbois 2
+#define MATbeton 3
 // Mes fonctions aleatoires
 #define Hauteur rand()%Nby
 #define Largeur rand()%(Nbx-debutX)
@@ -51,6 +55,7 @@ void Matrice(void);
 void DrawBirds(int coul);
 void SCOREconstruct(int bt, int bs);
 void SCOREoiseau(int i, int j, int k);
+int MAT2Col(int mat);
 
 void initialisationVglobales (void);  
 void BitMapTypeOiseau(void); 
@@ -67,7 +72,7 @@ void DesActivation (int i);
 
 // Variables recuperees avec Get
 int NbrO;
-int typeO;
+int typeO; 
 int Niveau; 
 int light; 
 int trace;
@@ -86,7 +91,7 @@ float Vx0, Vy0, currentTIME, deltaT;
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
 
-// Voir define pour les valeurs Arbitraires
+// Voir define.materiaux pour les valeurs Arbitraires
 int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR;
 
 int Mat[Nbx][Nby];// L'aire de jeu
@@ -173,11 +178,30 @@ void Matrice(void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-			Construction(i, j, Mat [i][j]);
+			Construction(i, j, MAT2Col(Mat [i][j]));
 			
 		}
 	}
 }	 
+
+// -------------------------------
+
+int MAT2Col(int mat)
+{
+	switch(mat)
+	{
+		case MATfond:
+			return colorT;
+		case MATbeton:
+			return colorBETON;
+		case MATbois:
+			return colorBOIS;
+		case MATcoch:
+			return colorCOCH;
+		default:
+			return colorT;
+	}
+}
 
 // -------------------------------
 
@@ -215,7 +239,7 @@ void SCOREoiseau(int i, int j, int k) // Nombre de boule normal(3pts), Agressive
 
 // -------------------------------  
 
-void SCOREconstruct(int bt, int bs)	  // Nombre de beton, bois // score brique : beton (10) bois(5)  
+void SCOREconstruct(int bt, int bs)	  // Nombre de beton, bois // score briQue : beton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
 }
@@ -297,7 +321,7 @@ void DrawArrierePlan (void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-				Mat [i][j]=fond;
+				Mat [i][j]=MATvide;
 		}
 	}	
 }
@@ -314,10 +338,10 @@ void DrawTour (void)
 			tailleTOUR=Hauteur; 
 			if (PileOuFace==1)
 			{
-				typeTOUR=beton;
+				typeTOUR=MATbeton;
 			}
 			else
-				typeTOUR=bois;
+				typeTOUR=MATbois;
 			for (j=0; j<tailleTOUR; j++)
 			{
 				Mat[i][Nby-j-1]=typeTOUR;
@@ -343,7 +367,7 @@ void DrawCOCH (void)
 	{
 		PCy=Hauteur;
 		PCx=Largeur;
-		if (Mat[PCx][PCy]!=colorCOCH)
+		if (Mat[PCx][PCy]!=MATcoch)
 		{
 			for (i=PCy; i<Nby; i++)
 			{
@@ -356,14 +380,14 @@ void DrawCOCH (void)
 				} 
 				else 
 				{
-					if (Mat[PCx][i+1]!=fond)
+					if (Mat[PCx][i+1])
 					{
 						NbrCp++;
 						break;
 					}
 				}
 			}
-			Mat[PCx][PCy]=colorCOCH;
+			Mat[PCx][PCy]=MATcoch;
 		}
 	}   
 
@@ -381,7 +405,7 @@ void AffichageEcran (void)
 
 // -------------------------------
 
-void Score(void) // Pas complet : depend que SCOREoiseau
+void Score(void) // Pas complet : depend Que SCOREoiseau
 {
 	int n, a, e;
 	if (typeO==0)
@@ -431,7 +455,7 @@ void CalcVx0Vy0 (void)
 }
 
 // -------------------------------
-void DesActivation (int i) // Pas complet : il manque des numerique
+void DesActivation (int i) // Pas complet : il manQue des numeriQue
 {	
 	// panelHandle
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, i);
@@ -463,7 +487,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			
 			Score(); 
 		
-			CalcVx0Vy0 ();  // Vitesse & angle initiaux de chaque oiseau
+			CalcVx0Vy0 ();  // Vitesse & angle initiaux de chaQue oiseau
 			
 			deltaT=5./(V0+1);
 			
@@ -521,7 +545,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						DrawBirds(VAL_WHITE);
 				}
 				
-				// Equations de mouvement
+				// EQuations de mouvement
 				posX[0]=Vx0*currentTIME+posX0;
 				posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
 		
@@ -536,26 +560,26 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				if (	((posX[0] <= width) || (posY[0] <= height)) ||
 					((posX[1] <= width) || (posY[1] <= height)) ||
 					((posX[2] <= width) || (posY[2] <= height))	)
-				{// Verifier la condition pcq bug apres que la premiere boule sorte de la map
+				{// Verifier la condition pcQ bug apres Que la premiere boule sorte de la map
 					
 					for (k=0;k<=NbrO-1;k++)
 					{
 						i=posX[k]/sizeCASE;
 						j=posY[k]/sizeCASE;
-						if (Mat[i][j]==fond)  // Pb de taille 
+						if (Mat[i][j]==MATfond)  // Pb de taille 
 							SCOREconstruct(0,0);
 						// Collision
-						if (Mat[i][j]!=fond)
+						if (Mat[i][j])
 						{
-							if (Mat[i][j]==beton)
+							if (Mat[i][j]==MATbeton)
 								SCOREconstruct(1, 0);
-							if (Mat[i][j]==bois)
+							if (Mat[i][j]==MATbois)
 								SCOREconstruct(0, 1);
 
 							for (a=j; a>1; a--)
 							{
 								Mat[i][j]=Mat[i][j-1];
-								Mat[i][0]=fond;
+								Mat[i][0]=MATfond;
 								j--;
 								indice[k]=1;
 								// *(indice+k)=1;
