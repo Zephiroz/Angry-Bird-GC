@@ -11,7 +11,7 @@
 
 
 //----------------------------------------------------------------------------------------------------
-//DEFINE 
+// DEFINE 
 #define width 400
 #define height 300
 #define sizeCASE 20
@@ -20,13 +20,13 @@
 #define g 9.8
 #define Nbx	width/sizeCASE
 #define Nby	height/sizeCASE
-#define Xt 10 //abscisse de la tour (en matricielle)
+#define Xt 10 // Abscisse de la tour (en matricielle)
 /*#define MAXh 15
 #define MAXtest 1 */
 
 #define beton colorB/*colorG*/
 #define bois colorV/*colorM*/
-//score val
+// Score val
 #define VALoisN 3
 #define VALoisA 5
 #define VALoisE 20
@@ -37,7 +37,7 @@
 #define Largeur rand()%(Nbx-debutX)
 #define PileOuFace rand()%2
 //----------------------------------------------------------------------------------------------------
-//PROTOTYPAGE 
+// PROTOTYPAGE 
 void DrawBird(int x, int y, int color);
 void Construction(int i, int j, int coul);
 void Matrice(void); 
@@ -46,7 +46,7 @@ int SCOREconstruct(int bt, int bs);
 int SCOREoiseau(int i, int j, int k);
 
 //----------------------------------------------------------------------------------------------------
-//VARIABLES GLOBALES
+// VARIABLES GLOBALES
 int posX0, posY0, debutX;
 int NbrO; 
 float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
@@ -67,15 +67,15 @@ int light;
 float vent;
 int trace;
 
-int Mat[Nbx][Nby];//l'air de jeu
+int Mat[Nbx][Nby];// L'aire de jeu
 
-//ce que je cherche : int indice[NbrO] 
+// Ce que je cherche : int indice[NbrO] 
 int indice[3]={0,0,0};
 //int * indice;
 
 																	  
 //----------------------------------------------------------------------------------------------------
-//PROGRAMME 
+// PROGRAMME 
 
 static int panelHandle;
 static int mode; 
@@ -103,7 +103,7 @@ int main (int argc, char *argv[])
 		return -1;
 		
 	Cls();
-	//initialisation numeric
+	// Initialisation numeric
 	vent = 0;
 	V0 = 50;
 	alpha = 45;
@@ -111,7 +111,7 @@ int main (int argc, char *argv[])
 	trace=0;
 	typeO=0;
 	
-	// image de l'oiseau en fonction de l'oiseau
+	// Image de l'oiseau en fonction de l'oiseau
 				if (typeO==0)
 				{
 					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
@@ -125,11 +125,11 @@ int main (int argc, char *argv[])
 				{
 					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
 				}
-	//dimentionner le canvas
+	// Dimentionner le canvas
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
 	
-	//indice[0]=0; // déja initialisé
+	//indice[0]=0; // Deja initialise
 	//indice[1]=0;
 	//indice[2]=0; 
 	
@@ -140,7 +140,7 @@ int main (int argc, char *argv[])
 	scoreS=0;
 	
 	posX0=0;
-	posY0=height-1-15;//- taille du cercle(carrï¿½);
+	posY0=height-1-15;// Taille du cercle(carrï¿½);
 	
 	posX[0]=posX0;
 	posY[0]=posY0;
@@ -150,7 +150,7 @@ int main (int argc, char *argv[])
 	posY[1]=posY0;
 	
 	debutX=5;
-//couleurs 
+// Couleurs 
 	colorN = VAL_BLACK;
 	colorY = VAL_YELLOW;
 	colorR = VAL_RED;
@@ -159,19 +159,19 @@ int main (int argc, char *argv[])
 	colorV = VAL_GREEN;
 	colorB = VAL_BLUE;
 
-	//choix du fond
+	// Choix du fond
 	fond=colorT;
 	
-	//choix du cochon
+	// Choix du cochon
 	colorCOCH = colorR;  
-// fin des couleurs
+// Fin des couleurs
 
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
 	
-	//fonction aleatoire
+	// Fonction aleatoire
 	srand(time(&date));
 	
-	//dessin de l'arriere plan
+	// Dessin de l'arriere plan
 	
 	for (j=0; j<Nby; j++)
 	{
@@ -181,13 +181,13 @@ int main (int argc, char *argv[])
 		}
 	}
 	
-	// dessin de la tour
+	// Dessin de la tour
 	
 	
 	/*printf("taille de la tour :\n");
 	scanf("%d", &tailleTOUR);  */
 	
-	//generation aleatoire de la map 
+	// Generation aleatoire de la map 
 	for (i=debutX; i<Nbx; i++)
 	{
 		if (PileOuFace==1)
@@ -205,7 +205,7 @@ int main (int argc, char *argv[])
 			}
 		}
 	}
-	// GÃ©nÃ©ration alÃ©atoire de la position du cochon
+	// Generation aleatoire de la position du cochon
 	printf("Nombre de cochons :\n");
 	scanf("%d", &NbrC);
 	// Recherche cochon on peut aussi la faire en fonction 
@@ -254,8 +254,8 @@ while(NbrCp<NbrC)
 	SetCtrlVal (panelHandle, PANEL_SCORE, score);
 
 	
-	//Connaitre la position de la souris sur le Canvas
-	//GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
+	// Connaitre la position de la souris sur le Canvas
+	// GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
 	
 	DrawBirds(color);   
 	
@@ -278,7 +278,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 		{
 		case EVENT_COMMIT:
 		
-			// image de l'oiseau en fonction de l'oiseau
+			// Image de l'oiseau en fonction de l'oiseau
 				if (typeO==0)
 				{
 					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
@@ -307,7 +307,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 				e=NbrO;
 			SCOREoiseau(n, a, e);
 			
-			//calcule de deltaT
+			// Calcule de deltaT
 			Vx0=V0*cos(alpha*pi/180)-vent;
 			Vy0=-V0*sin(alpha*pi/180);
 			
@@ -378,7 +378,7 @@ int CVICALLBACK ON_PUISSANCE (int panel, int control, int event,
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (panelHandle, PANEL_PUISSANCE, &V0);
-			//calcule de VoX &VoY		
+			// Calcule de VoX &VoY		
 
 			break;
 		}
@@ -576,13 +576,13 @@ int CVICALLBACK ON_VENT (int panel, int control, int event,
 	}
 	return 0;
 }
-//C'est ici que sera le CALLBACK de Indicateur de vent
+// C'est ici que sera le CALLBACK de Indicateur de vent
 //GetCtrlVal (panelHandle, MODE_vent, &vent)
-// Ce sera un float allant de 0 Ã  50 (ou30)
+// Ce sera un float allant de 0 a 50 (ou30)
 
 //---------------------------------------------------------------------------------------------------- 
 
-//C'est ici que sera le CALLBACK de ActiveTRACE
+// C'est ici que sera le CALLBACK de ActiveTRACE
 //GetCtrlVal (panelHandle, MODE_vent, &trace)
 // Ce sera un int vallant 0 (non) ou 1(oui)
 int CVICALLBACK ON_TRACE (int panel, int control, int event,
@@ -630,16 +630,16 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 			
 				currentTIME=currentTIME+deltaT; 
 				
-				//Trace ou pas ?
+				// Trace ou pas ?
 				for (k=0; k<=NbrO-1; k++)
 				{
 					if (trace==0)
-						//ca marchait, fait chier
+						// Ca marchait, fait chier
 						//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
 						GetBitmapFromFile("fond.bmp", &bmp);
 						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
 						Matrice();
-					// si marche pas mettre en main
+					// Si marche pas mettre en main
 						//CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
 						
 						//=> fond Blanc du Canvas = lumière 
@@ -649,7 +649,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						DrawBirds(VAL_WHITE);
 				}
 				
-				//Equations de mouvement
+				// Equations de mouvement
 				posX[0]=Vx0*currentTIME+posX0;
 				posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
         
@@ -664,15 +664,15 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				if (	((posX[0] <= width) || (posY[0] <= height)) ||
 					((posX[1] <= width) || (posY[1] <= height)) ||
 					((posX[2] <= width) || (posY[2] <= height))	)
-				{//verifier la condition pcq bug apres que la premiere boule sorte de la map
+				{// Verifier la condition pcq bug apres que la premiere boule sorte de la map
 					
 					for (k=0;k<=NbrO-1;k++)
 					{
 						i=posX[k]/sizeCASE;
 						j=posY[k]/sizeCASE;
-						if (Mat[i][j]==fond)  //pb de taille 
+						if (Mat[i][j]==fond)  // Pb de taille 
 							SCOREconstruct(0,0);
-						//collision
+						// Collision
 						if (Mat[i][j]!=fond)
 						{
 							if (Mat[i][j]==beton)
@@ -713,7 +713,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 }//int
 
 //--------------------------------------------------------------------------------------------   
-//Nos FONCTIONS  
+// Nos FONCTIONS  
 //--------------------------------------------------------------------------------------------   
 
 //-------------------------------
@@ -781,7 +781,7 @@ void DrawBirds(int coul)
 
 //-------------------------------   
 
-int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
+int SCOREoiseau(int i, int j, int k) // Nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
 {
 	scoreO=scoreO-i*VALoisN-j*VALoisA-k*VALoisE;
 	return scoreO;
@@ -789,7 +789,7 @@ int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5
 
 //-------------------------------  
 
-int SCOREconstruct(int bt, int bs)	  //nombre de bï¿½ton, bois //score brique : bï¿½ton (10) bois(5)  
+int SCOREconstruct(int bt, int bs)	  //  Nombre de beton, bois //score brique : beton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
 	return scoreS;
