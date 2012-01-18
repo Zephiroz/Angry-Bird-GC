@@ -53,6 +53,7 @@ void DrawBird(int x, int y, int color);
 void Construction(int i, int j, int coul);
 void Matrice(void); 
 void DrawBirds(int coul);
+void DrawBack(void);
 void SCOREconstruct(int bt, int bs);
 void SCOREoiseau(int i, int j, int k);
 int MAT2Col(int mat);
@@ -169,18 +170,23 @@ void Construction(int i, int j, int coul)
 	CanvasDrawRect (panelHandle, PANEL_CANVAS, MakeRect(j*sizeCASE,i*sizeCASE,sizeCASE,sizeCASE), VAL_DRAW_FRAME_AND_INTERIOR); 
 }
 
+void DrawBack(void)
+{
+	GetBitmapFromFile("fond.bmp", &bmp);
+	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+}
 // -------------------------------
 
 void Matrice(void)
 {
 	int i, j;
+	if (light) DrawBack();
 	for (j=0; j<Nby; j++)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-			//if Mat[i][j]==MATcoch:			
+			if (Mat[i][j]==MATcoch)/*Does Nothng*/;
 			Construction(i, j, MAT2Col(Mat [i][j]));
-			
 		}
 	}
 }	 
@@ -204,7 +210,6 @@ int MAT2Col(int mat)
 			if (light) return colorCOCH;
 			else return colorCOCH;		
 		default:
-			printf("erreur");
 			if (light) return colorT;
 			else return colorT;
 	}
@@ -246,7 +251,7 @@ void SCOREoiseau(int i, int j, int k) // Nombre de boule normal(3pts), Agressive
 
 // -------------------------------  
 
-void SCOREconstruct(int bt, int bs)	  // Nombre de beton, bois // score briQue : beton (10) bois(5)  
+void SCOREconstruct(int bt, int bs)	  // Nombre de beton, bois // score brique : beton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
 }
@@ -306,17 +311,17 @@ void initialisationVglobales (void)
 
 void BitMapTypeOiseau(void)
 {
-	if (typeO==0)
-	{
-		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\bebebird.bmp", &color);  
-	}
-	if (typeO==1)
-	{
-		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\agressivebird.bmp", &color);;		
-	}
-	if (typeO==2)
-	{
-		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\poweredbird.bmp", &color);;	
+	switch(typeO)
+	{	
+		case 0:
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\bebebird.bmp", &color);
+			break;
+		case 1:
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\agressivebird.bmp", &color);
+			break;
+		case 2:
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\poweredbird.bmp", &color);
+			break;
 	}	
 }
 
@@ -413,7 +418,7 @@ void AffichageEcran (void)
 
 // -------------------------------
 
-void Score(void) // Pas complet : depend Que SCOREoiseau
+void Score(void) // Pas complet : depend que SCOREoiseau
 {
 	int n, a, e;
 	if (typeO==0)
@@ -463,7 +468,7 @@ void CalcVx0Vy0 (void)
 }
 
 // -------------------------------
-void DesActivation (int i) // Pas complet : il manQue des numeriQue
+void DesActivation (int i) // Pas complet : il manque des numerique
 {	
 	// panelHandle
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, i);
@@ -495,7 +500,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			
 			Score(); 
 		
-			CalcVx0Vy0 ();  // Vitesse & angle initiaux de chaQue oiseau
+			CalcVx0Vy0 ();  // Vitesse & angle initiaux de chaque oiseau
 			
 			deltaT=5./(V0+1);
 			
@@ -540,8 +545,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				{
 					if (trace==0)
 						// CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
-						GetBitmapFromFile("fond.bmp", &bmp);
-						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						DrawBack();
 						Matrice();
 					// Si marche pas mettre en main
 						// CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
@@ -553,7 +557,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						DrawBirds(VAL_WHITE);
 				}
 				
-				// EQuations de mouvement
+				// Equations de mouvement
 				posX[0]=Vx0*currentTIME+posX0;
 				posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
 		
@@ -785,9 +789,9 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	
 			DrawArrierePlan ();
 
-			DrawTour ();  // aleatoire
+			DrawTour ();  // Aleatoire
 	
-			DrawCOCH ();  // aleatoire
+			DrawCOCH ();  // Aleatoire
 	
 			AffichageEcran ();
 			// -----------------------------------------------
@@ -834,22 +838,8 @@ int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (mode, MODE_LUMIERE, &light);
-			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); 
+			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); // WHAT WHAT WHAT ??
 			Matrice();
-			/*if (light==1)
-							{
-								for (j=0; j<Nby; j++)
-								{
-									for (i=0; i<Nbx; i++)
-									{
-										fond=colorN;
-										colorCOCH = colorN;  
-										colorV = colorN;
-										colorB = colorN;
-									}
-								}
-
-							}	 */
 			break;
 		}
 	return 0;
