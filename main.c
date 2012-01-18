@@ -661,8 +661,8 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				
 				DrawBirds(color);
 			
-				if (	((posX[0] <= width) || (posY[0] <= height)) &&
-					((posX[1] <= width) || (posY[1] <= height)) &&
+				if (	((posX[0] <= width) || (posY[0] <= height)) ||
+					((posX[1] <= width) || (posY[1] <= height)) ||
 					((posX[2] <= width) || (posY[2] <= height))	)
 				{//verifier la condition pcq bug apres que la premiere boule sorte de la map
 					
