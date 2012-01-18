@@ -47,8 +47,8 @@ void DrawBird(int x, int y, int color);
 void Construction(int i, int j, int coul);
 void Matrice(void); 
 void DrawBirds(int coul);
-int SCOREconstruct(int bt, int bs);
-int SCOREoiseau(int i, int j, int k);
+void SCOREconstruct(int bt, int bs);
+void SCOREoiseau(int i, int j, int k);
 
 void initialisationVglobales (void);  
 void BitMapTypeOiseau(void); 
@@ -56,6 +56,9 @@ void DrawArrierePlan (void);
 void DrawTour (void);
 void DrawCOCH (void);  
 void AffichageEcran (void);
+void Score(void);
+void CalcVx0Vy0 (void); 
+void DesActivation (int i);
 
 //----------------------------------------------------------------------------------------------------
 //VARIABLES GLOBALES
@@ -201,18 +204,16 @@ void DrawBirds(int coul)
 
 //-------------------------------   
 
-int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
+void SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5) et explosive(10) // 
 {
 	scoreO=scoreO-i*VALoisN-j*VALoisA-k*VALoisE;
-	return scoreO;
 }
 
 //-------------------------------  
 
-int SCOREconstruct(int bt, int bs)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
+void SCOREconstruct(int bt, int bs)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
-	return scoreS;
 }
 
 //------------------------------- 
@@ -374,6 +375,67 @@ void AffichageEcran (void)
 	DrawBirds(color); 
 }
 
+//-------------------------------
+
+void Score(void) // pas complet : dépend que SCOREoiseau
+{
+	int n, a, e;
+	if (typeO==0)
+	{
+		n=NbrO;
+		a=0;
+		e=0;
+	}
+	if (typeO==1)
+	{
+		n=0;
+		a=NbrO;
+		e=0;
+	}
+	if (typeO=2)
+	{
+		n=0;
+		a=0;
+		e=NbrO;
+	}
+	SCOREoiseau(n, a, e);
+}
+
+//-------------------------------
+
+void CalcVx0Vy0 (void)
+{
+	Vx0=V0*cos(alpha*pi/180)-vent;
+	Vy0=-V0*sin(alpha*pi/180);
+
+	if (alpha>85)
+	{
+		alpha1=90;
+	}else alpha1=alpha+5;
+			
+	Vx01=V0*cos(alpha1*pi/180);
+	Vy01=-V0*sin(alpha1*pi/180);
+			
+	if (alpha<5)
+	{
+		alpha2=0;
+	}
+	alpha2=alpha-5;
+			
+	Vx02=V0*cos(alpha2*pi/180);
+	Vy02=-V0*sin(alpha2*pi/180);
+}
+
+//-------------------------------
+void DesActivation (int i) // pas complet : il manque des numerique
+{
+	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, i);
+	SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,i);
+	SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,i); 
+	SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,i);
+}
+
+
 //----------------------------------------------------------------------------------------------------  
 // Nos BOUTONS
 //---------------------------------------------------------------------------------------------------- 
@@ -383,69 +445,22 @@ void AffichageEcran (void)
 int CVICALLBACK ON_FIRE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
-	int n, a, e, k;
-
 	switch (event)
 		{
 		case EVENT_COMMIT:
 		
-			// image de l'oiseau en fonction de l'oiseau
-				if (typeO==0)
-				{
-					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
-					//color = VAL_RED;		
-				}
-				if (typeO==1)
-				{
-					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\agressivebird.bmp", &color);;		
-				}
-				if (typeO==2)
-				{
-					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
-				}
-	
-			if (typeO==0)
-				n=NbrO;
-				a=0;
-				e=0;
-			if (typeO==1)
-				n=0;
-				a=NbrO;
-				e=0;
-			if (typeO=2)
-				n=0;
-				a=0;
-				e=NbrO;
-			SCOREoiseau(n, a, e);
+			BitMapTypeOiseau();
 			
-			//calcule de deltaT
-			Vx0=V0*cos(alpha*pi/180)-vent;
-			Vy0=-V0*sin(alpha*pi/180);
-			
-			if (alpha>85)
-			{
-				alpha1=90;
-			}else alpha1=alpha+5;
-			
-			Vx01=V0*cos(alpha1*pi/180);
-			Vy01=-V0*sin(alpha1*pi/180);
-			
-			if (alpha<5)
-			{
-				alpha2=0;
-			}
-			alpha2=alpha-5;
-			
-			Vx02=V0*cos(alpha2*pi/180);
-			Vy02=-V0*sin(alpha2*pi/180);
+			Score(); 
+		
+			CalcVx0Vy0 ();  // vitesse & angle initiaux de chaque oiseau
 			
 			deltaT=5./(V0+1);
-			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_INTERVAL, deltaT);  
+			
+			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_INTERVAL, deltaT); 
 			currentTIME=0;
-			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 1);
-			SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,1);
-	     	SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,1); 
-	      	SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,1); 
+			
+			DesActivation (1);    // (1 = activeTIMER & desactiveNUMERIC) / (0 = désactiveTIMER & desactiveNUMERIC) 
 
 			break;
 		}
