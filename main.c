@@ -53,10 +53,11 @@ float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
 int posX[3], posY[3]; //2eme oiseau //
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
-int color, colorCOCH, colorR, colorN, colorY, colorV, colorB, fond ,typeTOUR; 
+int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR; 
 float Yt;
 int tailleTOUR=5;
 int typeO;
+int bmp;
 
 int score;
 int scoreO;
@@ -84,7 +85,7 @@ static int menu;
 int main (int argc, char *argv[])
 {
 	time_t date;
-	
+
 	int PCx,PCy;
 	
 	int i, k, j, NbrC, NbrCp; 
@@ -108,8 +109,22 @@ int main (int argc, char *argv[])
 	alpha = 45;
 	NbrO=1;
 	trace=0;
+	typeO=0;
 	
-	
+	// image de l'oiseau en fonction de l'oiseau
+				if (typeO==0)
+				{
+					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
+					//color = VAL_RED;		
+				}
+				if (typeO==1)
+				{
+					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\agressivebird.bmp", &color);;		
+				}
+				if (typeO==2)
+				{
+					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
+				}
 	//dimentionner le canvas
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
@@ -139,26 +154,13 @@ int main (int argc, char *argv[])
 	colorN = VAL_BLACK;
 	colorY = VAL_YELLOW;
 	colorR = VAL_RED;
+	colorT = VAL_TRANSPARENT;
 
 	colorV = VAL_GREEN;
 	colorB = VAL_BLUE;
-	
-	//determine de la couleur de la boule en fonction du type de boule
-	if (typeO==0)
-	{
-		color = VAL_RED;		
-	}
-	if (typeO==1)
-	{
-		color = VAL_RED;		
-	}
-	if (typeO==2)
-	{
-		color = VAL_BLACK;	
-	}
 
 	//choix du fond
-	fond=colorY;
+	fond=colorT;
 	
 	//choix du cochon
 	colorCOCH = colorR;  
@@ -276,6 +278,21 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 		{
 		case EVENT_COMMIT:
 		
+			// image de l'oiseau en fonction de l'oiseau
+				if (typeO==0)
+				{
+					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
+					//color = VAL_RED;		
+				}
+				if (typeO==1)
+				{
+					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\agressivebird.bmp", &color);;		
+				}
+				if (typeO==2)
+				{
+					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
+				}
+	
 			if (typeO==0)
 				n=NbrO;
 				a=0;
@@ -614,11 +631,23 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				currentTIME=currentTIME+deltaT; 
 				
 				//Trace ou pas ?
-				if (trace==0)
-					DrawBirds(fond);
-				if (trace==1)
-					DrawBirds(VAL_WHITE);
+				for (k=0; k<=NbrO-1; k++)
+				{
+					if (trace==0)
+						//ca marchait, fait chier
+						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						GetBitmapFromFile("fond.bmp", &bmp);
+						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+						Matrice();
+					// si marche pas mettre en main
+						//CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
+						
+						//=> fond Blanc du Canvas = lumière 
+						//CanvasClear (panelHandle, PANEL_CANVAS, VAL_ENTIRE_OBJECT);
 					
+					if (trace==1)
+						DrawBirds(VAL_WHITE);
+				}
 				
 				//Equations de mouvement
 				posX[0]=Vx0*currentTIME+posX0;
@@ -690,9 +719,12 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 //-------------------------------
 void DrawBird(int x, int y, int coul)
 {
-	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
-	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
-	CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); 
+	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, coul);
+	//SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, coul); 
+	//CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); */
+	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, coul, VAL_ENTIRE_OBJECT, MakeRect(y,x,sizeCASE,sizeCASE) );
+	
+	//GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\fond.bmp", &color); 
 }
 
 //-------------------------------

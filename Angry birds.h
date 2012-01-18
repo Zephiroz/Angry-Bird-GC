@@ -14,16 +14,21 @@
 
      /* Panels and Controls: */
 
-#define  PANEL                           1       /* callback function: ON_QUITTE */
-#define  PANEL_Angle                     2       /* callback function: ON_ANGLE */
-#define  PANEL_PUISSANCE                 3       /* callback function: ON_PUISSANCE */
-#define  PANEL_FIRE                      4       /* callback function: ON_FIRE */
-#define  PANEL_QUITTER                   5       /* callback function: ON_QUITTER */
-#define  PANEL_CANVAS                    6
-#define  PANEL_CONTROLE                  7       /* callback function: ON_CONTROLE */
-#define  PANEL_SCORE                     8       /* callback function: ON_SCORE */
-#define  PANEL_MENU                      9       /* callback function: ON_MENU */
-#define  PANEL_TIMER                     10      /* callback function: ON_TIMER */
+#define  PANEL                            1       /* callback function: ON_QUITTE */
+#define  PANEL_Angle                      2       /* control type: scale, callback function: ON_ANGLE */
+#define  PANEL_PUISSANCE                  3       /* control type: scale, callback function: ON_PUISSANCE */
+#define  PANEL_FIRE                       4       /* control type: command, callback function: ON_FIRE */
+#define  PANEL_QUITTER                    5       /* control type: command, callback function: ON_QUITTER */
+#define  PANEL_CANVAS                     6       /* control type: canvas, callback function: (none) */
+#define  PANEL_CONTROLE                   7       /* control type: command, callback function: ON_CONTROLE */
+#define  PANEL_SCORE                      8       /* control type: numeric, callback function: ON_SCORE */
+#define  PANEL_MENU                       9       /* control type: command, callback function: ON_MENU */
+#define  PANEL_TIMER                      10      /* control type: timer, callback function: ON_TIMER */
+
+
+     /* Control Arrays: */
+
+          /* (no control arrays in the resource file) */
 
 
      /* Menu Bars, Menus, and Menu Items: */
@@ -31,7 +36,7 @@
           /* (no menu bars in the resource file) */
 
 
-     /* Callback Prototypes: */ 
+     /* Callback Prototypes: */
 
 int  CVICALLBACK ON_ANGLE(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK ON_CONTROLE(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
