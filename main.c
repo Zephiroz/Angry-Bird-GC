@@ -124,20 +124,6 @@ int main (int argc, char *argv[])
 					
 				if ((credits = LoadPanel (0, "credits.uir", CREDITS)) < 0)
 					return -1;
-		
-	//initialisation globales & Définition taille Canvas & Couleurs & timer
-	initialisationVglobales ();
-	
-	// image de l'oiseau en fonction de l'oiseau
-	BitMapTypeOiseau();
-	
-	DrawArrierePlan ();
-
-	DrawTour ();  // aleatoire
-	
-	DrawCOCH ();  // aleatoire
-	
-	AffichageEcran ();
 	
 	DisplayPanel (accueil);
 
@@ -223,7 +209,7 @@ int SCOREoiseau(int i, int j, int k) //nombre de boule normal(3pts), Agressive(5
 
 //-------------------------------  
 
-int SCOREconstruct(int bt, int bs)	  //nombre de bï¿½ton, bois //score brique : bï¿½ton (10) bois(5)  
+int SCOREconstruct(int bt, int bs)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois;
 	return scoreS;
@@ -707,7 +693,7 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	return 0;
 }
 
-//----------- Display Panel -----------------------------------------------------------------------------  
+//----------- DISPLAY PANEL -----------------------------------------------------------------------------  
  
  int CVICALLBACK ON_CONTROLE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
@@ -715,8 +701,8 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	switch (event)
 		{
 		case EVENT_COMMIT:
-			DisplayPanel (mode);
 			HidePanel (panelHandle); 
+			DisplayPanel (mode);
 		break;
 		}
 	return 0;
@@ -728,8 +714,8 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	switch (event)
 		{
 		case EVENT_COMMIT:
-			DisplayPanel (menu);
 			HidePanel (panelHandle);
+			DisplayPanel (menu);
 			break;
 		}
 	return 0;
@@ -741,8 +727,24 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	switch (event)
 	{
 		case EVENT_COMMIT:
-			DisplayPanel (panelHandle);
+			
+			//initialisation globales & Définition taille Canvas & Couleurs & timer
+			initialisationVglobales ();
+			
+			// image de l'oiseau en fonction de l'oiseau
+			BitMapTypeOiseau();
+	
+			DrawArrierePlan ();
+
+			DrawTour ();  // aleatoire
+	
+			DrawCOCH ();  // aleatoire
+	
+			AffichageEcran ();
+			//-----------------------------------------------
+			
 			HidePanel (accueil);
+			DisplayPanel (panelHandle);
 			break;
 	}
 	return 0;
