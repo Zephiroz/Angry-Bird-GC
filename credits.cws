@@ -1,6 +1,6 @@
 [Workspace Header]
 Version = 1000
-Pathname = "/c/Users/Dorian/Desktop/Projet info/Angry birds.cws"
+Pathname = "/c/Users/Dorian/Desktop/Projet info/credits.cws"
 CVI Dir = "/c/program files/national instruments/cvi2010"
 CVI Shared Dir = "/C/Program Files/National Instruments/Shared/CVI"
 CVI Pub Local Dir = "/C/ProgramData/National Instruments/CVI2010"
@@ -11,7 +11,7 @@ VXIplug&play Framework Dir = "/C/Program Files/IVI Foundation/VISA/winnt"
 VXIplug&play Framework 64-bit Dir = "/C/Program Files/IVI Foundation/VISA/win64"
 Number of Projects = 1
 Active Project = 1
-Project 0001 = "Angry birds.prj"
+Project 0001 = "credits.prj"
 Drag Bar Left = 153
 Window Top = 30
 Window Left = 270
@@ -30,7 +30,7 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 6
+Number of Opened Files = 0
 Window Confinement Region Enabled = True
 MainColumnWidth = 136
 FileDateColumnWidth = 70
@@ -48,77 +48,17 @@ Batch Build Debug = False
 Force Rebuild = False
 
 [File 0001]
-Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
+Path = "/c/Users/Dorian/Desktop/Projet info/credits.c"
 File Type = "CSource"
-Disk Date = 3409761095
+Disk Date = 3409747258
 In Projects = "1,"
-Window Top = 32
-Window Left = 10
-Window Height = -16281
-Window Z-Order = 1
-Source Window State = "1,540,540,540,12,36,36,0,0,139,0,0,0,0,0,42,527,0,600,28,349,683,1,0,"
+Source Window State = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
 
 [File 0002]
-Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
-File Type = "User Interface Resource"
-Disk Date = 3409754472
-In Projects = "1,"
-Window Top = 62
-Window Left = 26
-Window Height = 349
-Window Width = 683
-Window Z-Order = 3
-
-[File 0003]
-Path = "/c/Users/Dorian/Desktop/Projet info/Menu.uir"
-File Type = "User Interface Resource"
-Disk Date = 3409756804
-In Projects = "1,"
-Window Top = 92
-Window Left = 42
-Window Height = 349
-Window Width = 683
-Window Z-Order = 2
-
-[File 0004]
-Path = "/c/Users/Dorian/Desktop/Projet info/Acceuil.uir"
-File Type = "User Interface Resource"
-Disk Date = 3409747258
-In Projects = "1,"
-Window Top = 32
-Window Left = 10
-Window Height = 349
-Window Width = 683
-Window Z-Order = 5
-
-[File 0005]
-Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
-File Type = "User Interface Resource"
-Disk Date = 3409747258
-In Projects = "1,"
-Window Top = 32
-Window Left = 10
-Window Height = 349
-Window Width = 683
-Window Z-Order = 4
-
-[File 0006]
 Path = "/c/Users/Dorian/Desktop/Projet info/credits.uir"
 File Type = "User Interface Resource"
 Disk Date = 3409747258
 In Projects = "1,"
-Window Top = 212
-Window Left = 106
-Window Height = 349
-Window Width = 683
-Window Z-Order = 6
-
-[File 0007]
-Path = "/c/Users/Dorian/Desktop/Projet info/Option.h"
-File Type = "Include"
-Disk Date = 3409743081
-In Projects = "1,"
-Source Window State = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
 
 [Default Build Config 0001 Debug]
 Generate Browse Info = True
