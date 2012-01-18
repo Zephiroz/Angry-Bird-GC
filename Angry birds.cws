@@ -14,10 +14,10 @@ Active Project = 1
 Project 0001 = "Angry birds.prj"
 Drag Bar Left = 153
 Window Top = 30
-Window Left = 270
+Window Left = 784
 Window Bottom = 854
 Window Right = 1576
-Maximized = False
+Maximized = True
 Maximized Children = True
 Max32 Number Of Errors = 20
 Track Include File Dependencies = True
@@ -50,18 +50,18 @@ Force Rebuild = False
 [File 0001]
 Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
 File Type = "CSource"
-Disk Date = 3409761095
+Disk Date = 3409767668
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = -16281
 Window Z-Order = 1
-Source Window State = "1,540,540,540,12,36,36,0,0,139,0,0,0,0,0,42,527,0,600,28,349,683,1,0,"
+Source Window State = "1,701,702,702,16,16,16,0,0,176,0,0,0,0,0,55,668,7,697,84,349,683,1,0,"
 
 [File 0002]
 Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409754472
+Disk Date = 3409765320
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
@@ -72,7 +72,7 @@ Window Z-Order = 3
 [File 0003]
 Path = "/c/Users/Dorian/Desktop/Projet info/Menu.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409756804
+Disk Date = 3409765320
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
@@ -83,7 +83,7 @@ Window Z-Order = 2
 [File 0004]
 Path = "/c/Users/Dorian/Desktop/Projet info/Acceuil.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409747258
+Disk Date = 3409761284
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
@@ -94,7 +94,7 @@ Window Z-Order = 5
 [File 0005]
 Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409747258
+Disk Date = 3409765320
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
@@ -105,7 +105,7 @@ Window Z-Order = 4
 [File 0006]
 Path = "/c/Users/Dorian/Desktop/Projet info/credits.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409747258
+Disk Date = 3409761284
 In Projects = "1,"
 Window Top = 212
 Window Left = 106

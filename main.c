@@ -592,14 +592,77 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		{
 			case EVENT_TIMER_TICK:
 		
+				///optionnel
 				PresenceTrace (); 
 				
+				///optionnel
 				IndicePresenceOiseau (); //determine l'indice de la case k a partir du quel sera determiner quelle boule dessiner
-			
+				
+				// temps qui passe
 				currentTIME=currentTIME+deltaT; 
 				
+				//sauvegarde des anciennes position
+				posoldX=posX;
+				posoldY=posY;
+				
+				// calcul des nouvelles positions
 				testStopOiseau ();	//if oiseau k à une collision alors : posX[k]=posX0; posY[k]=posY0, sinon détermine equation mouvement normal  
 				
+				//Rechargement du fond
+				CanvasDrawBitmap(panelHandle, PANEL_CANVAS, fond, VAL_ENTIRE_OBJECT, VAL_ENTIRE_OBJECT);
+				
+				// Rechargement structure
+				Matrice();
+				
+				// collision()
+				// Dessin Oiseau
+				DrawBird(posX, posY, color);
+				DrawBird(posoldX, posoldY, VAL_WHITE);
+				
+				void collision (void)
+				{
+					if(Mat[posX/sizeCASE][posY/sizeCASE]==1)//si ca rentre dans la strucuture
+				}	{
+						//augmenter score 
+						score = score + 250;
+						
+						Mat[posX/sizeCASE][posY/sizeCASE]=0; // la case devient vide
+						
+						DesActivation(0);
+						CanvasDrawBitmap(panelHandle, PANEL_CANVAS, fond, VAL_ENTIRE_OBJECT, VAL_ENTIRE_OBJECT);
+						Matrice(); //reprice strucuture
+						
+						for (i=0; i<Nbx; i++)
+						{
+							for(j=0; j<Nby; j++)
+							{
+								if (Mat[i][j]==1)//collision
+								{
+									if (Mat[i][j+1]==0) //fond
+									{
+										Mat[i][j+1]=1; //strucuture
+										MatJeu[i][j]=0;
+										scores=score+50;
+										i=0;
+										j=0;
+										
+									}	
+										
+								}
+							}
+						}
+						CanvasDrawBitmap(panelHandle, PANEL_CANVAS, fond, VAL_ENTIRE_OBJECT, VAL_ENTIRE_OBJECT);
+						Matrice();
+						
+					}else
+					{
+						if (Mat[posX/sizeCASE][posY/sizeCASE]==2) //out of map ??
+							{
+								DesActivation[0]
+							}
+					}
+				
+				/*
 				DrawBirds(color); //premier dessin 
 				
 				
@@ -628,21 +691,19 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 								j--;
 								indice[k]=1;
 							}
-							Matrice(); //Affichage ecran sinon à bien ordonner
+							 //Affichage ecran sinon à bien ordonner
 						}
 						else //=pas collision
 						{
-							
+							Matrice();	
 						}
 						score=score + scoreS + scoreO;
 						SetCtrlVal (panelHandle, PANEL_SCORE, score);
 						
 					}//= pas dans le canvas
-				} 
-				 // Verifier la condition pcq bug apres que la premiere boule sorte de la map
-					
-					
-
+				}// test effectuer pour chaque boule 
+				 
+				// Verifier la condition pcq bug apres que la premiere boule sorte de la map
 				  //if de condition
 				else
 				{
@@ -651,12 +712,12 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 					SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,0); 
 					SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,0); 
 				}
-				
+				*/
 			break;
 			
-		}  //switch
+		}  //fin switch actif ou pas
 		return 0;
-}
+}//fin timer
 
 
 //----------- FERMER FENETRE -----------------------------------------------------------------------------   
