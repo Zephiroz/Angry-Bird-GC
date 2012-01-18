@@ -50,7 +50,7 @@ int SCOREoiseau(int i, int j, int k);
 int posX0, posY0, debutX;
 int NbrO; 
 float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
-int posX[3], posY[3]; //2eme oiseau // faire l'allocation dynamique
+int posX[3], posY[3]; //2eme oiseau //
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
 int color, colorCOCH, colorN, colorV, colorB, fond ,typeTOUR; 
@@ -63,6 +63,8 @@ int scoreO;
 int scoreS;
 
 int light;
+float vent;
+int trace;
 
 int Mat[Nbx][Nby];//l'air de jeu
 
@@ -97,7 +99,14 @@ int main (int argc, char *argv[])
 		return -1;
 		
 	Cls();
-	//initialisation
+	//initialisation numeric
+	vent = 0;
+	V0 = 50;
+	alpha = 45;
+	NbrO=1;
+	trace=0;
+	
+	
 	//dimentionner le canvas
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
@@ -105,8 +114,6 @@ int main (int argc, char *argv[])
 	//indice[0]=0;
 	//indice[1]=0;
 	//indice[2]=0; 
-	
-	NbrO=1;
 	
 	NbrCp=0;
 	
@@ -256,14 +263,16 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 				e=NbrO;
 			SCOREoiseau(n, a, e);
 			
+			
 			indice = malloc(NbrO*sizeof(int));
 			for (k=0; k<NbrO; k++)
 			{
 				*(indice+k)=0;
 			}
 			
+			
 			//calcule de deltaT
-			Vx0=V0*cos(alpha*pi/180);
+			Vx0=V0*cos(alpha*pi/180)-vent;
 			Vy0=-V0*sin(alpha*pi/180);
 			
 			if (alpha>85)
@@ -518,6 +527,17 @@ int CVICALLBACK ON_MENU (int panel, int control, int event,
 	return 0;
 }
 
+//---------------------------------------------------------------------------------------------------- 
+
+//C'est ici que sera le CALLBACK de Indicateur de vent
+//GetCtrlVal (panelHandle, MODE_vent, &vent)
+// Ce sera un float allant de 0 à 50 (ou30)
+
+//---------------------------------------------------------------------------------------------------- 
+
+//C'est ici que sera le CALLBACK de ActiveTRACE
+//GetCtrlVal (panelHandle, MODE_vent, &trace)
+// Ce sera un int vallant 0 (non) ou 1(oui)
 
 //---------------------------------------------------------------------------------------------------- 
 
@@ -529,8 +549,7 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		switch (event)
 		{
 			case EVENT_TIMER_TICK:
-       
-				//Equations de mouvement
+		
 				/*if (light==1)
 					{
 						fond=colorN;
@@ -540,8 +559,14 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 					} */
 				currentTIME=currentTIME+deltaT; 
 				
-				DrawBirds(fond);
+				//Trace ou pas ?
+				if (trace==0)
+					DrawBirds(fond);
+				if (trace==1)
+					DrawBirds(VAL_WHITE);
+					
 				
+				//Equations de mouvement
 				posX[0]=Vx0*currentTIME+posX0;
 				posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
         
@@ -552,14 +577,11 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				posY[2]=Vy02*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
 				
 				DrawBirds(color);
-				
-				
-				
-				
+			
 				if (	((posX[0] <= width) || (posY[0] <= height)) &&
-						((posX[1] <= width) || (posY[1] <= height)) &&
-						((posX[2] <= width) || (posY[2] <= height))	)
-				{
+					((posX[1] <= width) || (posY[1] <= height)) &&
+					((posX[2] <= width) || (posY[2] <= height))	)
+				{//verifier la condition pcq bug apres que la premiere boule sorte de la map
 					
 					for (k=0;k<=NbrO-1;k++)
 					{
