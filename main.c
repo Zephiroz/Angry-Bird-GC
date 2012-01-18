@@ -10,36 +10,39 @@
 #include <time.h>
 #include "Acceuil.h"
 #include "credits.h"
+//---------------- DEFINE -------------------------------------------------------------------------------
 
+//valeurs changeables : ------------------------------------------------
 
-//----------------------------------------------------------------------------------------------------
-//DEFINE 
+#define Xt 10 //abscisse de la tour (en matricielle)
 #define width 400
 #define height 300
 #define sizeCASE 20
 
-#define pi 3.1415  
-#define g 9.8
+//Valeurs invariantes : ------------------------------------------------
+
 #define Nbx	width/sizeCASE
 #define Nby	height/sizeCASE
-#define Xt 10 //abscisse de la tour (en matricielle)
-/*#define MAXh 15
-#define MAXtest 1 */
 
+#define pi 3.1415  
+#define g 9.8
+
+// type de la tour : 
 #define beton colorB/*colorG*/
 #define bois colorV/*colorM*/
-//score val
+// score :
 #define VALoisN 3
 #define VALoisA 5
 #define VALoisE 20
 #define VALbois 5
 #define VALbet 10
-
+// mes fonctions aléatoires
 #define Hauteur rand()%Nby
 #define Largeur rand()%(Nbx-debutX)
 #define PileOuFace rand()%2
-//----------------------------------------------------------------------------------------------------
-//PROTOTYPAGE 
+
+//-------------- PROTOTYPAGE --------------------------------------------------------------------------
+
 void DrawBird(int x, int y, int color);
 void Construction(int i, int j, int coul);
 void Matrice(void); 
@@ -47,37 +50,48 @@ void DrawBirds(int coul);
 int SCOREconstruct(int bt, int bs);
 int SCOREoiseau(int i, int j, int k);
 
+void initialisationVglobales (void);  
+void BitMapTypeOiseau(void); 
+void DrawArrierePlan (void);
+void DrawTour (void);
+void DrawCOCH (void);  
+void AffichageEcran (void);
+
 //----------------------------------------------------------------------------------------------------
 //VARIABLES GLOBALES
+
+// variables récupérées avec Get
+int NbrO;
+int typeO;
+int Niveau; 
+int light; 
+int trace;
+float V0, alpha;
+float vent;
+
+// Variables pour Set
+int score; 
+
+// Variables normales
 int posX0, posY0, debutX;
-int NbrO; 
-float V0, Vx0, Vy0, alpha, currentTIME, deltaT;
-int posX[3], posY[3]; //2eme oiseau //
+int posX[3], posY[3]; //pour 3 oiseaux // 
+int indice[3]={0,0,0};
+
+float Vx0, Vy0, currentTIME, deltaT;
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
+
 int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR; 
-float Yt;
-int tailleTOUR=5;
-int typeO;
+int Mat[Nbx][Nby];// l'air de jeu
+
 int bmp;
+float Yt;
+int tailleTOUR;
 
-int Niveau;
-
-int score;
 int scoreO;
 int scoreS;
 
-int light;
-float vent;
-int trace;
 
-int Mat[Nbx][Nby];//l'air de jeu
-
-//ce que je cherche : int indice[NbrO] 
-int indice[3]={0,0,0};
-//int * indice;
-
-																	  
 //----------------------------------------------------------------------------------------------------
 //PROGRAMME 
 
@@ -89,12 +103,10 @@ static int credits;
 
 int main (int argc, char *argv[])
 {
+	//déclaration variables locales
 	time_t date;
+	srand(time(&date));
 
-	int PCx,PCy;
-	
-	int i, k, j, NbrC, NbrCp; 
-	
 				if (InitCVIRTE (0, argv, 0) == 0)	/* Needed if linking in external compiler; harmless otherwise */
 					return -1;	/* out of memory */
 	
@@ -113,164 +125,19 @@ int main (int argc, char *argv[])
 				if ((credits = LoadPanel (0, "credits.uir", CREDITS)) < 0)
 					return -1;
 		
-	Cls();
-	
-	//initialisation numeric
-	vent = 0;
-	V0 = 50;
-	alpha = 45;
-	NbrO = 1;
-	trace = 0;
-	typeO = 0;
-	Niveau = 1;
+	//initialisation globales & Définition taille Canvas & Couleurs & timer
+	initialisationVglobales ();
 	
 	// image de l'oiseau en fonction de l'oiseau
-				if (typeO==0)
-				{
-					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
-					//color = VAL_RED;		
-				}
-				if (typeO==1)
-				{
-					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\agressivebird.bmp", &color);;		
-				}
-				if (typeO==2)
-				{
-					GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
-				}
-	//dimentionner le canvas
-	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
-	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
+	BitMapTypeOiseau();
 	
-	//indice[0]=0; // déja initialisé
-	//indice[1]=0;
-	//indice[2]=0; 
-	
-	NbrCp=0;
-	
-	score=0;
-	scoreO=0;
-	scoreS=0;
-	
-	posX0=0;
-	posY0=height-1-15;//- taille du cercle(carrï¿½);
-	
-	posX[0]=posX0;
-	posY[0]=posY0;
-	posX[1]=posX0;
-	posY[1]=posY0;
-	posX[2]=posX0;
-	posY[1]=posY0;
-	
-	debutX=5;
-//couleurs 
-	colorN = VAL_BLACK;
-	colorY = VAL_YELLOW;
-	colorR = VAL_RED;
-	colorT = VAL_TRANSPARENT;
+	DrawArrierePlan ();
 
-	colorV = VAL_GREEN;
-	colorB = VAL_BLUE;
-
-	//choix du fond
-	fond=colorT;
+	DrawTour ();  // aleatoire
 	
-	//choix du cochon
-	colorCOCH = colorR;  
-// fin des couleurs
-
-	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
+	DrawCOCH ();  // aleatoire
 	
-	//fonction aleatoire
-	srand(time(&date));
-	
-	//dessin de l'arriere plan
-	
-	for (j=0; j<Nby; j++)
-	{
-		for (i=0; i<Nbx; i++)
-		{
-				Mat [i][j]=fond;
-		}
-	}
-	
-	// dessin de la tour
-	
-	
-	/*printf("taille de la tour :\n");
-	scanf("%d", &tailleTOUR);  */
-	
-	//generation aleatoire de la map 
-	for (i=debutX; i<Nbx; i++)
-	{
-		if (PileOuFace==1)
-		{
-			tailleTOUR=Hauteur; 
-			if (PileOuFace==1)
-			{
-				typeTOUR=beton;
-			}
-			else 
-				typeTOUR=bois;
-			for (j=0; j<tailleTOUR; j++)
-			{
-				Mat[i][Nby-j-1]=typeTOUR;
-			}
-		}
-	}
-	// GÃ©nÃ©ration alÃ©atoire de la position du cochon
-	printf("Nombre de cochons :\n");
-	scanf("%d", &NbrC);
-	// Recherche cochon on peut aussi la faire en fonction 
-	
-while(NbrCp<NbrC) 
-	{
-        PCy=Hauteur;
-        PCx=Largeur;
-        if (Mat[PCx][PCy]!=colorCOCH)
-        {
-            for (i=PCy; i<Nby; i++)
-            {
-                PCy=i;
-				
-                if (i+1>(Nby-1))
-                {
-                    NbrCp++;
-                    break;
-                } 
-                else 
-                {
-                    if (Mat[PCx][i+1]!=fond)
-                    {
-                        NbrCp++;
-                        break;
-                    }
-                }
-            }
-            Mat[PCx][PCy]=colorCOCH;
-        }
-    }   
-	
-	
-	/*
-	for (i=0; i<tailleTOUR; i+=2)
-	{
-			Mat[Xt][Nby-1-i]=colorV;  
-	}
-	for (i=1; i<tailleTOUR; i+=2)
-	{
-
-			Mat[Xt][Nby-1-i]=colorB;  
-	}*/
-	
-	Matrice ();
-	SetCtrlVal (panelHandle, PANEL_SCORE, score);
-
-	
-	//Connaitre la position de la souris sur le Canvas
-	//GetRelativeMouseState (panelHandle, PANEL_CANVAS, &posxmouse, &posymouse, &left,&right,&key);
-	
-	DrawBirds(color); 
+	AffichageEcran ();
 	
 	DisplayPanel (accueil);
 
@@ -362,6 +229,164 @@ int SCOREconstruct(int bt, int bs)	  //nombre de bï¿½ton, bois //score brique : 
 	return scoreS;
 }
 
+//------------------------------- 
+//------------------------------- 
+//------------------------------- 
+
+void initialisationVglobales (void)
+{
+	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
+	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
+	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
+	
+
+	vent = 0;
+	V0 = 50;
+	alpha = 45;
+	NbrO = 1;
+	trace = 0;
+	typeO = 0;
+	Niveau = 1;
+	score=0;
+	scoreO=0;
+	scoreS=0;
+	
+	posX0=0;
+	posY0=height-1-15;//- taille du cercle(carrï¿½);
+	
+	posX[0]=posX0;
+	posY[0]=posY0;
+	posX[1]=posX0;
+	posY[1]=posY0;
+	posX[2]=posX0;
+	posY[1]=posY0;
+	
+	debutX=5;
+	
+	//couleurs 
+	colorN = VAL_BLACK;
+	colorY = VAL_YELLOW;
+	colorR = VAL_RED;
+	colorT = VAL_TRANSPARENT;
+
+	colorV = VAL_GREEN;
+	colorB = VAL_BLUE;
+
+	//choix du fond
+	fond=colorT;
+	
+	//choix du cochon
+	colorCOCH = colorR; 
+}
+
+//------------------------------- 
+
+void BitMapTypeOiseau(void)
+{
+	if (typeO==0)
+	{
+		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\bebebird.bmp", &color);  
+	}
+	if (typeO==1)
+	{
+		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\agressivebird.bmp", &color);;		
+	}
+	if (typeO==2)
+	{
+		GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\poweredbird.bmp", &color);;	
+	}	
+}
+
+//------------------------------- 
+
+void DrawArrierePlan (void)
+{
+	int i, j;
+	for (j=0; j<Nby; j++)
+	{
+		for (i=0; i<Nbx; i++)
+		{
+				Mat [i][j]=fond;
+		}
+	}	
+}
+
+//------------------------------- 
+
+void DrawTour (void)
+{
+	int i, j;
+	for (i=debutX; i<Nbx; i++)
+	{
+		if (PileOuFace==1)
+		{
+			tailleTOUR=Hauteur; 
+			if (PileOuFace==1)
+			{
+				typeTOUR=beton;
+			}
+			else 
+				typeTOUR=bois;
+			for (j=0; j<tailleTOUR; j++)
+			{
+				Mat[i][Nby-j-1]=typeTOUR;
+			}
+		}
+	}	
+}
+
+ //-------------------------------   
+
+void DrawCOCH (void)
+
+{
+	int i, j, NbrC, NbrCp; 
+	int PCx, PCy; 
+	NbrCp=0;
+	
+	Cls(); 
+	printf("Nombre de cochons :\n");
+	scanf("%d", &NbrC);
+	
+	while(NbrCp<NbrC) 
+	{
+        PCy=Hauteur;
+        PCx=Largeur;
+        if (Mat[PCx][PCy]!=colorCOCH)
+        {
+            for (i=PCy; i<Nby; i++)
+            {
+                PCy=i;
+				
+                if (i+1>(Nby-1))
+                {
+                    NbrCp++;
+                    break;
+                } 
+                else 
+                {
+                    if (Mat[PCx][i+1]!=fond)
+                    {
+                        NbrCp++;
+                        break;
+                    }
+                }
+            }
+            Mat[PCx][PCy]=colorCOCH;
+        }
+    }   
+
+}
+
+//------------------------------- 
+
+void AffichageEcran (void)
+{
+	SetCtrlVal (panelHandle, PANEL_SCORE, score); 
+	
+	Matrice ();
+	DrawBirds(color); 
+}
 
 //----------------------------------------------------------------------------------------------------  
 // Nos BOUTONS
@@ -428,7 +453,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			Vx02=V0*cos(alpha2*pi/180);
 			Vy02=-V0*sin(alpha2*pi/180);
 			
-			deltaT=sizeCASE/(V0+1);
+			deltaT=5./(V0+1);
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_INTERVAL, deltaT);  
 			currentTIME=0;
 			SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 1);
