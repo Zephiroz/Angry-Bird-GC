@@ -38,7 +38,7 @@
 #define VALbois 5
 #define VALbet 10
 // Materiau
-#define MATvide 0
+#define MATfond 0
 #define MATcoch 1
 #define MATbois 2
 #define MATbeton 3
@@ -178,7 +178,7 @@ void Matrice(void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-			if Mat[][]==MATcoch:			
+			//if Mat[i][j]==MATcoch:			
 			Construction(i, j, MAT2Col(Mat [i][j]));
 			
 		}
@@ -196,7 +196,7 @@ int MAT2Col(int mat)
 			else return colorN;
 		case MATbeton:
 			if (light) return colorBETON;
-			else: return colorN;
+			else return colorN;
 		case MATbois:
 			if (light) return colorBOIS;
 			else return colorN;
@@ -204,6 +204,7 @@ int MAT2Col(int mat)
 			if (light) return colorCOCH;
 			else return colorCOCH;		
 		default:
+			printf("erreur");
 			if (light) return colorT;
 			else return colorT;
 	}
@@ -262,6 +263,7 @@ void initialisationVglobales (void)
 	
 
 	vent = 0;
+	light = 1;
 	V0 = 50;
 	alpha = 45;
 	NbrO = 1;
@@ -327,7 +329,7 @@ void DrawArrierePlan (void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-				Mat [i][j]=MATvide;
+				Mat [i][j]=MATfond;
 		}
 	}	
 }
@@ -404,7 +406,7 @@ void DrawCOCH (void)
 void AffichageEcran (void)
 {
 	SetCtrlVal (panelHandle, PANEL_SCORE, score); 
-	
+	//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); 
 	Matrice ();
 	DrawBirds(color); 
 }
@@ -827,11 +829,13 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
  
 int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
-{   int i, j;
+{   int i, j, bmp;
 	switch (event)
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (mode, MODE_LUMIERE, &light);
+			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); 
+			Matrice();
 			/*if (light==1)
 							{
 								for (j=0; j<Nby; j++)
@@ -845,9 +849,9 @@ int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 									}
 								}
 
-							}
+							}	 */
 			break;
-		}*/
+		}
 	return 0;
 }
  
