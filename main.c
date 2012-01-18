@@ -178,6 +178,7 @@ void Matrice(void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
+			if Mat[][]==MATcoch:			
 			Construction(i, j, MAT2Col(Mat [i][j]));
 			
 		}
@@ -191,15 +192,20 @@ int MAT2Col(int mat)
 	switch(mat)
 	{
 		case MATfond:
-			return colorT;
+			if (light) return colorT;
+			else return colorN;
 		case MATbeton:
-			return colorBETON;
+			if (light) return colorBETON;
+			else: return colorN;
 		case MATbois:
-			return colorBOIS;
+			if (light) return colorBOIS;
+			else return colorN;
 		case MATcoch:
-			return colorCOCH;
+			if (light) return colorCOCH;
+			else return colorCOCH;		
 		default:
-			return colorT;
+			if (light) return colorT;
+			else return colorT;
 	}
 }
 
@@ -826,7 +832,7 @@ int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (mode, MODE_LUMIERE, &light);
-			if (light==1)
+			/*if (light==1)
 							{
 								for (j=0; j<Nby; j++)
 								{
@@ -841,7 +847,7 @@ int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 
 							}
 			break;
-		}
+		}*/
 	return 0;
 }
  
