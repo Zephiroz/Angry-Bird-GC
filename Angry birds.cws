@@ -30,7 +30,7 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 5
+Number of Opened Files = 6
 Window Confinement Region Enabled = True
 MainColumnWidth = 136
 FileDateColumnWidth = 70
@@ -51,20 +51,28 @@ Force Rebuild = False
 Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
 File Type = "CSource"
 <<<<<<< HEAD
+<<<<<<< HEAD
 Disk Date = 3409781532
 =======
 Disk Date = 3409782666
 >>>>>>> indev-multiples
+=======
+Disk Date = 3409784085
+>>>>>>> 81690d0067eb02ce5dc188bf9fa4411c6937ef57
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = -16281
 Window Z-Order = 1
 <<<<<<< HEAD
+<<<<<<< HEAD
 Source Window State = "1,876,891,876,16,35,16,0,0,176,0,817,0,811,0,44,509,0,531,13,349,683,1,0,"
 =======
 Source Window State = "1,494,495,494,8,11,8,0,0,176,0,825,0,819,0,44,119,0,122,37,349,683,1,0,"
 >>>>>>> indev-multiples
+=======
+Source Window State = "1,305,305,305,5,21,21,0,0,176,0,821,0,815,0,44,510,0,538,62,349,683,1,0,"
+>>>>>>> 81690d0067eb02ce5dc188bf9fa4411c6937ef57
 
 [File 0002]
 Path = "/c/Users/Dorian/Desktop/Projet info/Menu.uir"
@@ -75,7 +83,7 @@ Window Top = 92
 Window Left = 42
 Window Height = 349
 Window Width = 683
-Window Z-Order = 2
+Window Z-Order = 5
 
 [File 0003]
 Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
@@ -97,35 +105,47 @@ Window Top = 212
 Window Left = 106
 Window Height = 349
 Window Width = 683
-Window Z-Order = 5
+Window Z-Order = 6
 
 [File 0005]
 Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
 File Type = "User Interface Resource"
 <<<<<<< HEAD
+<<<<<<< HEAD
 Disk Date = 3409781157
 =======
 Disk Date = 3409782725
 >>>>>>> indev-multiples
+=======
+Disk Date = 3409782857
+>>>>>>> 81690d0067eb02ce5dc188bf9fa4411c6937ef57
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
 Window Height = 349
 Window Width = 683
 <<<<<<< HEAD
+<<<<<<< HEAD
 Window Z-Order = 4
 =======
 Window Z-Order = 3
 >>>>>>> indev-multiples
+=======
+Window Z-Order = 3
+>>>>>>> 81690d0067eb02ce5dc188bf9fa4411c6937ef57
 
 [File 0006]
 Path = "/c/Users/Dorian/Desktop/Projet info/Acceuil.uir"
 File Type = "User Interface Resource"
 <<<<<<< HEAD
+<<<<<<< HEAD
 Disk Date = 3409761284
 =======
 Disk Date = 3409781951
 >>>>>>> indev-multiples
+=======
+Disk Date = 3409781951
+>>>>>>> 81690d0067eb02ce5dc188bf9fa4411c6937ef57
 In Projects = "1,"
 Window Top = 32
 Window Left = 10

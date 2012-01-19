@@ -117,6 +117,7 @@ int tailleTOUR;
 
 int scoreO;
 int scoreS;
+int score=0;
 
 
 // ----------------------------------------------------------------------------------------------------
@@ -626,7 +627,10 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						collision(k);
 					}
 				}
-				
+				//Calcule et Affichage du score
+				score=scoreO+scoreS;
+				SetCtrlVal (panelHandle, PANEL_SCORE, score);
+			
 				//Rechargement du fond
 		//		DrawBack();
 				
@@ -845,6 +849,7 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 					posX[k]=posX0;
 					posY[k]=posY0;
 				}
+				
 			break;
 	}
 	return 0;
