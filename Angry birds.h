@@ -17,6 +17,9 @@
 #define  PANEL                            1
 #define  PANEL_Angle                      2       /* control type: scale, callback function: ON_ANGLE */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> indev-multiples
 #define  PANEL_RETIRER                    3       /* control type: command, callback function: ON_RETIRER */
 #define  PANEL_JOUER                      4       /* control type: command, callback function: ON_JOUER */
 #define  PANEL_PUISSANCE                  5       /* control type: scale, callback function: ON_PUISSANCE */
@@ -28,6 +31,7 @@
 #define  PANEL_TIMER                      11      /* control type: timer, callback function: ON_TIMER */
 #define  PANEL_CANVAS                     12      /* control type: canvas, callback function: (none) */
 #define  PANEL_COMMANDBUTTON              13      /* control type: command, callback function: (none) */
+<<<<<<< HEAD
 =======
 #define  PANEL_JOUER                      3       /* control type: command, callback function: ON_JOUER */
 #define  PANEL_PUISSANCE                  4       /* control type: scale, callback function: ON_PUISSANCE */
@@ -38,6 +42,8 @@
 #define  PANEL_MENU                       9       /* control type: command, callback function: ON_MENU */
 #define  PANEL_TIMER                      10      /* control type: timer, callback function: ON_TIMER */
 #define  PANEL_CANVAS                     11      /* control type: canvas, callback function: (none) */
+>>>>>>> indev-multiples
+=======
 >>>>>>> indev-multiples
 
 

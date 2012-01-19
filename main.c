@@ -202,7 +202,7 @@ void Matrice(void)
 		for (i=0; i<Nbx; i++)
 		{
 			if (Mat[i][j]==MATcoch)/*Does Nothng*/;
-			Construction(i, j, MAT2Col(Mat [i][j]));
+				Construction(i, j, MAT2Col(Mat [i][j]));
 		}
 	}
 }	 
@@ -446,11 +446,12 @@ void ScoreO(void) // Pas complet : depend que SCOREoiseau
 void CalcVinit (void)
 {
 	int i;
-	for (i=0; i<NbrO; i++);
+	for (i=0; i<NbrO; i++)
 	{
-		alphas[i]=min(alpha+i*5,90); // Decalage des Oiseaux
+		alphas[i]=/*min(*/alpha+i*5;/*,90);*/ // Decalage des Oiseaux
 		vitX[i]=V0*cos(alphas[i]*pi/180)-vent;
 		vitY[i]=-V0*sin(alphas[i]*pi/180);
+
 	}
 }
 
@@ -475,6 +476,7 @@ void CoordonneeOiseauEnMat(int k)
 {
 	posX[k]=vitX[k]*currentTIME+posX0;
 	posY[k]=vitY[k]*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
+	
 }
 
 //-------------------------------  
@@ -493,7 +495,7 @@ void collision (int k) // gestion de la collision
 	int i, j, a;
 	i=posX[k]/sizeCASE;
 	j=posY[k]/sizeCASE;
-	if (	((posX[k] <= width) || (posY[k] <= height)) )	
+	if (	 ((posX[k] > width) || (posY[k] > height)) )	
 		{
 			indice[k]=0;
 		}
