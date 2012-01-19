@@ -277,7 +277,7 @@ void initialisationVglobales (void)
 	Niveau = 1;
 	score=0;
 	scoreO=0;
-	scoreS=0;
+	scoreS=0;	   
 	
 	posX0=0;
 	posY0=height-1-15;// Taille du cercle(carre);
