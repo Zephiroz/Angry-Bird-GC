@@ -46,7 +46,9 @@
 // Mes fonctions aleatoires
 #define Hauteur rand()%Nby
 #define Largeur rand()%(Nbx-debutX)
-#define PileOuFace rand()%2
+#define PileOuFace rand()%2   
+//
+#define min(x,y) (x)<(y)?(x):(y)
 
 // -------------- PROTOTYPAGE --------------------------------------------------------------------------
 
@@ -490,44 +492,50 @@ void collision (int k) // gestion de la collision
 	int i, j, a;
 	i=posX[k]/sizeCASE;
 	j=posY[k]/sizeCASE;
-		
-	//test collision
-	if (Mat[i][j])
-	{
-		//disparition de la boule
-		indice[k]=0;
-		//incrementation du score
-		if (Mat[i][j]==MATbeton)
-			SCOREconstruct(1,0,0);
-		if (Mat[i][j]==MATbois)
-			SCOREconstruct(0,1,0);
-		if (Mat[i][j]==MATcoch)
-			SCOREconstruct(0,0,1);
-						
-		//effondrement strucuture
-		for (a=j; a>1; a--)
+	if (	((posX[k] <= width) || (posY[k] <= height)) )	
 		{
-			Mat[i][j]=Mat[i][j-1];
-			Mat[i][0]=MATfond;
-			j--;
+			indice[k]=0;
 		}
-		//DrawBack();
-		Matrice();
-	}
-	// Deplacement structre (optionnel si tout marche)
+	else 	
+		{//test collision
+			if (Mat[i][j])
+			{
+				//disparition de la boule
+				indice[k]=0;
+				//incrementation du score
+				if (Mat[i][j]==MATbeton)
+					SCOREconstruct(1,0,0);
+				if (Mat[i][j]==MATbois)
+					SCOREconstruct(0,1,0);
+				if (Mat[i][j]==MATcoch)
+					SCOREconstruct(0,0,1);
+						
+				//effondrement strucuture
+				for (a=j; a>1; a--)
+				{
+					Mat[i][j]=Mat[i][j-1];
+					Mat[i][0]=MATfond;
+					j--;
+				}
+				//DrawBack();
+				Matrice();
+			}
+			// Deplacement structre (optionnel si tout marche)
+		}
 }
+
 		
 //------------------------------- 
 
-int testCANVAS (void)
-{
-	if (	((posX[0] <= width) || (posY[0] <= height)) ||
-			((posX[1] <= width) || (posY[1] <= height)) ||
-			((posX[2] <= width) || (posY[2] <= height))	)
-		return 1;
-	else 
-		return 0;
-}
+//int testCANVAS (void)
+//{
+//	if (	((posX[0] <= width) || (posY[0] <= height)) ||
+//			((posX[1] <= width) || (posY[1] <= height)) ||
+//			((posX[2] <= width) || (posY[2] <= height))	)
+//		return 1;
+//	else 
+//		return 0; 
+//}				  
 
 //------------------------------- 
 																   /*

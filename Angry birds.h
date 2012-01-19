@@ -25,7 +25,6 @@
 #define  PANEL_MENU                       9       /* control type: command, callback function: ON_MENU */
 #define  PANEL_TIMER                      10      /* control type: timer, callback function: ON_TIMER */
 #define  PANEL_CANVAS                     11      /* control type: canvas, callback function: (none) */
-#define  PANEL_CANVAS_2                   12      /* control type: canvas, callback function: (none) */
 
 
      /* Control Arrays: */
