@@ -50,13 +50,13 @@ Force Rebuild = False
 [File 0001]
 Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
 File Type = "CSource"
-Disk Date = 3409783757
+Disk Date = 3409784085
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = -16281
 Window Z-Order = 1
-Source Window State = "1,661,661,661,12,62,62,0,0,176,0,821,0,815,0,44,638,0,661,12,349,683,1,0,"
+Source Window State = "1,305,305,305,5,21,21,0,0,176,0,821,0,815,0,44,510,0,538,62,349,683,1,0,"
 
 [File 0002]
 Path = "/c/Users/Dorian/Desktop/Projet info/Menu.uir"
