@@ -30,7 +30,7 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 3
+Number of Opened Files = 5
 Window Confinement Region Enabled = True
 MainColumnWidth = 136
 FileDateColumnWidth = 70
@@ -50,13 +50,13 @@ Force Rebuild = False
 [File 0001]
 Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
 File Type = "CSource"
-Disk Date = 3409797438
+Disk Date = 3409799931
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = -16281
-Window Z-Order = 1
-Source Window State = "1,328,328,328,16,20,16,0,0,176,0,852,0,846,0,55,291,0,328,20,349,683,1,0,"
+Window Z-Order = 4
+Source Window State = "1,328,328,328,16,20,16,0,0,80,0,854,0,848,0,25,856,0,910,40,349,683,1,0,"
 
 [File 0002]
 Path = "/c/Users/Dorian/Desktop/Projet info/Acceuil.uir"
@@ -67,7 +67,7 @@ Window Top = 32
 Window Left = 10
 Window Height = 349
 Window Width = 683
-Window Z-Order = 3
+Window Z-Order = 5
 
 [File 0003]
 Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
@@ -78,7 +78,7 @@ Window Top = 62
 Window Left = 26
 Window Height = 349
 Window Width = 683
-Window Z-Order = 2
+Window Z-Order = 3
 
 [File 0004]
 Path = "/c/Users/Dorian/Desktop/Projet info/credits.uir"
@@ -99,6 +99,7 @@ Window Top = 92
 Window Left = 42
 Window Height = 349
 Window Width = 683
+Window Z-Order = 2
 
 [File 0006]
 Path = "/c/Users/Dorian/Desktop/Projet info/Option.h"
@@ -110,12 +111,13 @@ Source Window State = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
 [File 0007]
 Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409781951
+Disk Date = 3409799930
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 349
 Window Width = 683
+Window Z-Order = 1
 
 [Default Build Config 0001 Debug]
 Generate Browse Info = True

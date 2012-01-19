@@ -237,9 +237,11 @@ int MAT2Col(int mat)
 
 void DrawBirds(int coul)
 {
-	int k;
+	int k,i,j;
 	for(k=0; k<NbrO; k++)
-	{
+	{		
+		i = posX[k]/sizeCASE;
+		j = posY[k]/sizeCASE;
 		if (indice[k]&&(posX[k] <= width) && (posY[k] <= height))
 			DrawBird(posX[k], posY[k], coul);
 			if (!trace)
@@ -599,7 +601,7 @@ void testStopOiseau (void)
 } 		   */
 				
 //----------------------------------------------------------------------------------------------------  
-// Nos BOUTONS
+// Nos BOUTONS					i
 //---------------------------------------------------------------------------------------------------- 
 
 
