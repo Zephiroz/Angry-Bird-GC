@@ -20,11 +20,12 @@
 #define  PANEL_PUISSANCE                  4       /* control type: scale, callback function: ON_PUISSANCE */
 #define  PANEL_FIRE                       5       /* control type: command, callback function: ON_FIRE */
 #define  PANEL_QUITTER                    6       /* control type: command, callback function: ON_QUITTERJEUX */
-#define  PANEL_CANVAS                     7       /* control type: canvas, callback function: (none) */
-#define  PANEL_CONTROLE                   8       /* control type: command, callback function: ON_CONTROLE */
-#define  PANEL_SCORE                      9       /* control type: numeric, callback function: ON_SCORE */
-#define  PANEL_MENU                       10      /* control type: command, callback function: ON_MENU */
-#define  PANEL_TIMER                      11      /* control type: timer, callback function: ON_TIMER */
+#define  PANEL_CONTROLE                   7       /* control type: command, callback function: ON_CONTROLE */
+#define  PANEL_SCORE                      8       /* control type: numeric, callback function: ON_SCORE */
+#define  PANEL_MENU                       9       /* control type: command, callback function: ON_MENU */
+#define  PANEL_TIMER                      10      /* control type: timer, callback function: ON_TIMER */
+#define  PANEL_CANVAS                     11      /* control type: canvas, callback function: (none) */
+#define  PANEL_CANVAS_2                   12      /* control type: canvas, callback function: (none) */
 
 
      /* Control Arrays: */

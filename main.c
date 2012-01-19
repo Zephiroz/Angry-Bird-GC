@@ -15,8 +15,8 @@
 // Valeurs variables : ------------------------------------------------
 
 #define Xt 10 // Abscisse de la tour (en matricielle)
-#define width 400
-#define height 300
+#define width 700
+#define height 500
 #define sizeCASE 20
 
 // Valeurs invariantes : ------------------------------------------------
@@ -70,7 +70,7 @@ void CalcVx0Vy0 (void);
 void DesActivation (int i);
 void IndicePresenceOiseau (void); 
 //void PresenceTrace (void); 
-void CoordonneeOiseauEnMat(void);
+void CoordonneeOiseauEnMat(int k);
 int testCOLLISION (int i, int j); 
 void testStopOiseau (void); 
 int testCANVAS (void);
@@ -439,25 +439,29 @@ void ScoreO(void) // Pas complet : depend que SCOREoiseau
 
 void CalcVx0Vy0 (void)
 {
-	Vx0=V0*cos(alpha*pi/180)-vent;
-	Vy0=-V0*sin(alpha*pi/180);
+	int i;
+	for (i=1; i<NbrO; i++);
+	{
+		Vx0=V0*cos(alpha*pi/180)-vent;
+		Vy0=-V0*sin(alpha*pi/180);
 
-	if (alpha>85)
-	{
-		alpha1=90;
-	}else alpha1=alpha+5;
+		if (alpha>85)
+		{
+			alpha1=90;
+		}else alpha1=alpha+5;
 			
-	Vx01=V0*cos(alpha1*pi/180);
-	Vy01=-V0*sin(alpha1*pi/180);
+		Vx01=V0*cos(alpha1*pi/180);
+		Vy01=-V0*sin(alpha1*pi/180);
 			
-	if (alpha<5)
-	{
-		alpha2=0;
+		if (alpha<5)
+		{
+			alpha2=0;
+		}
+		alpha2=alpha-5;
+			
+		Vx02=V0*cos(alpha2*pi/180);
+		Vy02=-V0*sin(alpha2*pi/180);
 	}
-	alpha2=alpha-5;
-			
-	Vx02=V0*cos(alpha2*pi/180);
-	Vy02=-V0*sin(alpha2*pi/180);
 }
 
 // -------------------------------
@@ -501,16 +505,10 @@ void DesActivation (int i) // Pas complet : il manque des numerique
 
 //-------------------------------  
 
-void CoordonneeOiseauEnMat(void)
+void CoordonneeOiseauEnMat(int k)
 {
-	posX[0]=Vx0*currentTIME+posX0;
-	posY[0]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
-        
-	posX[1]=Vx01*currentTIME+posX0;
-	posY[1]=Vy01*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
-	        
-	posX[2]=Vx02*currentTIME+posX0;
-	posY[2]=Vy02*currentTIME+0.5*g*currentTIME*currentTIME+posY0;		
+	posX[k]=Vx0*currentTIME+posX0;
+	posY[k]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
 }
 
 //-------------------------------  
@@ -550,6 +548,8 @@ void collision (int k) // gestion de la collision
 			Mat[i][0]=MATfond;
 			j--;
 		}
+		//DrawBack();
+		Matrice();
 	}
 	// deplacement strucutre (optionnel si tout marche)
 }
@@ -632,24 +632,22 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		switch (event)
 		{
 			case EVENT_TIMER_TICK:
-		
-				///optionnel
-				//PresenceTrace (); 
 
 				// temps qui passe
 				currentTIME=currentTIME+deltaT; 
-				
-				// calcul des nouvelles positions
-		//		testStopOiseau ();	//if oiseau k à une collision alors : posX[k]=posX0; posY[k]=posY0, sinon détermine equation mouvement normal
-				
-				//sauvegarde des anciennes position
+					
 				for (k=0;k<NbrO;k++)
 				{
+					
 					if (indice[k])
 					{
+						//sauvegarde des anciennes position
 						posoldX[k]=posX[k];
 						posoldY[k]=posY[k];
-					
+						
+						// calcul des nouvelles positions 
+						CoordonneeOiseauEnMat(k);  
+						
 						// Dessin Oiseau
 						DrawBird(posX[k], posY[k], color);
 						if (trace ==1)
@@ -659,10 +657,10 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 				}
 				
 				//Rechargement du fond
-				DrawBack();
+		//		DrawBack();
 				
 				// Rechargement structure
-				Matrice();
+		//		Matrice();
 				
 			break;
 			
@@ -846,6 +844,7 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 			AffichageEcran ();
 			//-----------------------------------------------
 			
+			DesActivation(0);
 			HidePanel (accueil);
 			DisplayPanel (panelHandle);
 			break;
@@ -923,10 +922,17 @@ int CVICALLBACK ON_TRACE (int panel, int control, int event,
 int CVICALLBACK ON_NOMBRE (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
+	int k;
 	switch (event)
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (mode, MODE_NbreOiseau, &NbrO);
+			for (k=0; k<NbrO; k++)
+			{
+				indice[k]=1;
+				posX[k]=posX0;
+				posY[k]=posY0;
+			}
 	
 			break;
 		}

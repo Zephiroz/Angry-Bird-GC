@@ -30,7 +30,7 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 4
+Number of Opened Files = 5
 Window Confinement Region Enabled = True
 MainColumnWidth = 136
 FileDateColumnWidth = 70
@@ -50,36 +50,48 @@ Force Rebuild = False
 [File 0001]
 Path = "/c/Users/Dorian/Desktop/Projet info/main.c"
 File Type = "CSource"
-Disk Date = 3409776470
+Disk Date = 3409779235
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = -16281
-Window Z-Order = 1
-Source Window State = "1,497,497,497,12,20,20,0,0,176,0,819,0,819,0,44,128,0,150,4,349,683,1,0,"
+Window Z-Order = 5
+Source Window State = "1,443,461,443,4,4,4,0,0,80,0,817,0,811,0,25,796,0,610,8,349,683,1,0,"
 
 [File 0002]
-Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
-File Type = "User Interface Resource"
-Disk Date = 3409768164
-In Projects = "1,"
-Window Top = 62
-Window Left = 26
-Window Height = 349
-Window Width = 683
-
-[File 0003]
 Path = "/c/Users/Dorian/Desktop/Projet info/Menu.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409768164
+Disk Date = 3409776734
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
 Window Height = 349
 Window Width = 683
-Window Z-Order = 2
+Window Z-Order = 4
+
+[File 0003]
+Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
+File Type = "User Interface Resource"
+Disk Date = 3409776734
+In Projects = "1,"
+Window Top = 32
+Window Left = 10
+Window Height = 349
+Window Width = 683
+Window Z-Order = 3
 
 [File 0004]
+Path = "/c/Users/Dorian/Desktop/Projet info/credits.uir"
+File Type = "User Interface Resource"
+Disk Date = 3409761284
+In Projects = "1,"
+Window Top = 212
+Window Left = 106
+Window Height = 349
+Window Width = 683
+Window Z-Order = 2
+
+[File 0005]
 Path = "/c/Users/Dorian/Desktop/Projet info/Acceuil.uir"
 File Type = "User Interface Resource"
 Disk Date = 3409761284
@@ -89,27 +101,16 @@ Window Left = 10
 Window Height = 349
 Window Width = 683
 
-[File 0005]
-Path = "/c/Users/Dorian/Desktop/Projet info/Option.uir"
-File Type = "User Interface Resource"
-Disk Date = 3409773738
-In Projects = "1,"
-Window Top = 32
-Window Left = 10
-Window Height = 349
-Window Width = 683
-Window Z-Order = 3
-
 [File 0006]
-Path = "/c/Users/Dorian/Desktop/Projet info/credits.uir"
+Path = "/c/Users/Dorian/Desktop/Projet info/Angry birds.uir"
 File Type = "User Interface Resource"
-Disk Date = 3409761284
+Disk Date = 3409776734
 In Projects = "1,"
-Window Top = 212
-Window Left = 106
+Window Top = 62
+Window Left = 26
 Window Height = 349
 Window Width = 683
-Window Z-Order = 4
+Window Z-Order = 1
 
 [File 0007]
 Path = "/c/Users/Dorian/Desktop/Projet info/Option.h"
