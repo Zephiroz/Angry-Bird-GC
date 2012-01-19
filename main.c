@@ -283,7 +283,7 @@ void initialisationVglobales (void)
 		posY[k]=posY0;
 	}
 	debutX=5;
-	
+		
 	// Couleurs 
 	colorN = VAL_BLACK;
 	colorY = VAL_YELLOW;
@@ -825,6 +825,7 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
  int CVICALLBACK ON_JOUER (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
+	int bmp;
 	switch (event)
 	{
 		case EVENT_COMMIT:
@@ -832,6 +833,13 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 			// Initialisation globales & Definition taille Canvas & Couleurs & timer
 			initialisationVglobales ();
 			
+			// chargement image.bmp dans le fond du Canvas
+			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\fond.bmp", &bmp); 
+			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));  
+			// chargement VAL_TRANSPARENT dans CANVAS_2
+			SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, VAL_TRANSPARENT);
+			SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, VAL_TRANSPARENT); 
+			CanvasDrawRect (panelHandle, PANEL_CANVAS, VAL_ENTIRE_OBJECT, VAL_DRAW_FRAME_AND_INTERIOR);  
 			// Image de l'oiseau en fonction de l'oiseau
 			BitMapTypeOiseau();
 	
@@ -852,6 +860,25 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 	return 0;
 }
 
+ int CVICALLBACK ON_RETIRER (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	int k;
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			DesActivation(0); 
+				for (k=0; k<NbrO; k++)
+				{
+					indice[k]=1;
+					posX[k]=posX0;
+					posY[k]=posY0;
+				}
+			break;
+	}
+	return 0;
+}
+ 
  int CVICALLBACK ON_CREDIT (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
@@ -991,6 +1018,19 @@ int CVICALLBACK ON_SCORE (int panel, int control, int event,
 		}
 	return 0;
 }
+
+int CVICALLBACK ON_ (int panel, int control, int event,
+		void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+		{
+		case EVENT_COMMIT:
+			SetCtrlVal (mode, PANEL_SCORE, score);
+			break;
+		}
+	return 0;
+}
+
 
 
 
