@@ -74,7 +74,7 @@ void CoordonneeOiseauEnMat(void);
 int testCOLLISION (int i, int j); 
 void testStopOiseau (void); 
 int testCANVAS (void);
-void collision (void) 
+void collision (int k);
 
 // ----------------------------------------------------------------------------------------------------
 // VARIABLES GLOBALES
@@ -105,7 +105,6 @@ int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,type
 
 int Mat[Nbx][Nby];// L'aire de jeu
 
-int bmp;
 float Yt;
 int tailleTOUR;
 
@@ -180,7 +179,8 @@ void Construction(int i, int j, int coul)
 
 void DrawBack(void)
 {
-	GetBitmapFromFile("VABfond.bmp", &bmp);
+	int bmp;
+	GetBitmapFromFile("images\\fond.bmp", &bmp);
 	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
 }
 // -------------------------------
@@ -227,26 +227,11 @@ int MAT2Col(int mat)
 
 void DrawBirds(int coul)
 {
-	if (NbrO==1)
+	int k;
+	for(k=0; k<NbrO; k++)
 	{
-		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
-			DrawBird(posX[0], posY[0], coul);
-	}
-	if (NbrO==2)
-	{
-		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
-			DrawBird(posX[0], posY[0], coul);
-		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
-			DrawBird(posX[1], posY[1], coul);
-	}
-	if (NbrO==3)
-	{
-		if ((indice[0]!=1) || (posX[0] <= width) || (posY[0] <= height))
-			DrawBird(posX[0], posY[0], coul);
-		if ((indice[1]!=1) || (posX[1] <= width) || (posY[1] <= height))
-			DrawBird(posX[1], posY[1], coul);
-		if ((indice[2]!=1) || (posX[2] <= width) || (posY[2] <= height))
-			DrawBird(posX[2], posY[2], coul);
+		if (indice[k]&&(posX[k] <= width) && (posY[k] <= height))
+			DrawBird(posX[k], posY[k], coul);
 	}
 }
 
@@ -270,6 +255,7 @@ void SCOREconstruct(int bt, int bs, int co)	  //nombre de béton, bois //score br
 
 void initialisationVglobales (void)
 {
+	int k;
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
@@ -290,13 +276,12 @@ void initialisationVglobales (void)
 	posX0=0;
 	posY0=height-1-15;// Taille du cercle(carre);
 	
-	posX[0]=posX0;
-	posY[0]=posY0;
-	posX[1]=posX0;
-	posY[1]=posY0;
-	posX[2]=posX0;
-	posY[1]=posY0;
-	
+	for (k=0; k<NbrO; k++)
+	{
+		indice[k]=1;
+		posX[k]=posX0;
+		posY[k]=posY0;
+	}
 	debutX=5;
 	
 	// Couleurs 
@@ -492,21 +477,6 @@ void DesActivation (int i) // Pas complet : il manque des numerique
 
 //-------------------------------
 
-void IndicePresenceOiseau (void)
-{
-	if (NbrO==1)
-	{
-		indice[1]=1;
-		indice[2]=1;
-	}	
-	if (NbrO==2)
-	{
-		indice[2]=1;
-	}
-}
-
-//-------------------------------  
-
 /*void PresenceTrace (void)	 // a supprimer
 {
 	int k;
@@ -544,117 +514,46 @@ void CoordonneeOiseauEnMat(void)
 }
 
 //-------------------------------  
-
+				  /*
 int testCOLLISION (int i, int j)   //1 il y a collision 
 {
-	if (Mat[i][j]!=fond)
+	if (Mat[i][j])
 		return 1;
 	else 
 		return 0;
-} 
+} 				*/
 
-void collision (void) // gestion de la collision
-	/*
-				DrawBirds(color); //premier dessin 
-				
-				
-				for (k=0;k<NbrO;k++)
-				{
-					if (testCANVAS()==1) //permutation a voir avec for
-					{
-					
-						i=posX[k]/sizeCASE;
-						j=posY[k]/sizeCASE;
-						if (testCOLLISION(i, j)==1) //s'il y a collision donc
-						{
-							//incrémentation du score
-							if (Mat[i][j]==béton)
-								SCOREconstruct(1,0,0);
-							if (Mat[i][j]==bois)
-								SCOREconstruct(0,1,0);
-							if (Mat[i][j]==colorCOCH)
-								SCOREconstruct(0,0,1);
+void collision (int k) // gestion de la collision
+{			 // début fonction
+
+	int i, j, a;
+	i=posX[k]/sizeCASE;
+	j=posY[k]/sizeCASE;
+		
+	//test collision
+	if (Mat[i][j])
+	{
+		//disparition de la boule
+		indice[k]=0;
+		//incrementation du score
+		if (Mat[i][j]==MATbeton)
+			SCOREconstruct(1,0,0);
+		if (Mat[i][j]==MATbois)
+			SCOREconstruct(0,1,0);
+		if (Mat[i][j]==MATcoch)
+			SCOREconstruct(0,0,1);
 						
-							
-							 //Affichage ecran sinon à bien ordonner
-						}
-						else //=pas collision
-						{
-							Matrice();	
-						}
-						score=score + scoreS + scoreO;
-						SetCtrlVal (panelHandle, PANEL_SCORE, score);
-						
-					}//= pas dans le canvas
-				}// test effectuer pour chaque boule 
-				 
-				// Verifier la condition pcq bug apres que la premiere boule sorte de la map
-				  //if de condition
-				else
-				{
-					SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
-					SetCtrlAttribute (panelHandle, PANEL_Angle, ATTR_DIMMED,0);
-					SetCtrlAttribute (panelHandle, PANEL_PUISSANCE, ATTR_DIMMED,0); 
-					SetCtrlAttribute (panelHandle, PANEL_FIRE, ATTR_DIMMED,0); 
-				}
-				*/
-				{			 // début fonction
-						int i, j;
-					
-						i=posX[k]/sizeCASE;
-						j=posY[k]/sizeCASE;
-						
-							//incrémentation du score
-							if (Mat[i][j]==béton)
-								SCOREconstruct(1,0,0);
-							if (Mat[i][j]==bois)
-								SCOREconstruct(0,1,0);
-							if (Mat[i][j]==colorCOCH)
-								SCOREconstruct(0,0,1);
-						
-							//effondrement strucuture
-							for (a=j; a>1; a--)
-							{
-								Mat[i][j]=Mat[i][j-1];
-								Mat[i][0]=fond;
-								j--;
-								indice[k]=1;
-							}
-							// déplacement strucutre (optionnel si tout marche)
-						
-						DesActivation(0);
-						GetBitmapFromFile("fond.bmp", &bmp);
-						CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
-						Matrice(); //reprise strucuture
-						
-					/*	for (i=0; i<Nbx; i++)	  // à effacer surement
-						{
-							for(j=0; j<Nby; j++)
-							{
-								if (Mat[i][j]==1)//collision
-								{
-									if (Mat[i][j+1]==0) //fond
-									{
-										Mat[i][j+1]=1; //strucuture
-										MatJeu[i][j]=0;
-										scores=score+50;
-										i=0;
-										j=0;
-										
-									}	
-										
-								}
-							}
-						} */
-					
-						
-					}else
-					{
-						if (Mat[posX/sizeCASE][posY/sizeCASE]==2) //out of map ??
-							{
-								DesActivation[0]
-							}
-					}
+		//effondrement strucuture
+		for (a=j; a>1; a--)
+		{
+			Mat[i][j]=Mat[i][j-1];
+			Mat[i][0]=MATfond;
+			j--;
+		}
+	}
+	// deplacement strucutre (optionnel si tout marche)
+}
+		
 //------------------------------- 
 
 int testCANVAS (void)
@@ -668,7 +567,7 @@ int testCANVAS (void)
 }
 
 //------------------------------- 
-
+																   /*
 void testStopOiseau (void)
 {
 	int k;
@@ -689,7 +588,7 @@ void testStopOiseau (void)
 		//test sur k ?
 			CoordonneeOiseauEnMat();
 	}
-} 
+} 		   */
 				
 //----------------------------------------------------------------------------------------------------  
 // Nos BOUTONS
@@ -728,7 +627,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
 {
-		int i,j,a; 
+		int i,j;
 		int k;
 		switch (event)
 		{
@@ -736,39 +635,34 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 		
 				///optionnel
 				//PresenceTrace (); 
-				
-				///optionnel
-				IndicePresenceOiseau (); //determine l'indice de la case k a partir du quel sera determiner quelle boule dessiner
-				
+
 				// temps qui passe
 				currentTIME=currentTIME+deltaT; 
 				
 				// calcul des nouvelles positions
-				
-				testStopOiseau ();	//if oiseau k à une collision alors : posX[k]=posX0; posY[k]=posY0, sinon détermine equation mouvement normal
+		//		testStopOiseau ();	//if oiseau k à une collision alors : posX[k]=posX0; posY[k]=posY0, sinon détermine equation mouvement normal
 				
 				//sauvegarde des anciennes position
 				for (k=0;k<NbrO;k++)
 				{
-					posoldX[k]=posX[k];
-					posoldY[k]=posY[k];
+					if (indice[k])
+					{
+						posoldX[k]=posX[k];
+						posoldY[k]=posY[k];
+					
+						// Dessin Oiseau
+						DrawBird(posX[k], posY[k], color);
+						if (trace ==1)
+							DrawBird(posoldX[k], posoldY[k], VAL_WHITE);
+						collision(k);
+					}
 				}
-				  
 				
 				//Rechargement du fond
-				GetBitmapFromFile("fond.bmp", &bmp);
-				CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
-				
-				if (testCOLLISION==1)
-					collision()
+				DrawBack();
 				
 				// Rechargement structure
 				Matrice();
-				
-						// Dessin Oiseau
-				DrawBirds(posX, posY, color);
-				if (trace ==1)
-					DrawBirds(posoldX, posoldY, VAL_WHITE);
 				
 			break;
 			
@@ -989,12 +883,13 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
  
 int CVICALLBACK ON_LIGHT (int panel, int control, int event,
 		void *callbackData, int eventData1, int eventData2)
-{   int i, j, bmp;
+{   int i, j;
 	switch (event)
 		{
 		case EVENT_COMMIT:
 			GetCtrlVal (mode, MODE_LUMIERE, &light);
-			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); // WHAT WHAT WHAT ??
+			DrawBack();
+			//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width)); // WHAT WHAT WHAT ??
 			Matrice();
 			break;
 		}
