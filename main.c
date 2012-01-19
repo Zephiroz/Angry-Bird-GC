@@ -46,7 +46,9 @@
 // Mes fonctions aleatoires
 #define Hauteur rand()%Nby
 #define Largeur rand()%(Nbx-debutX)
-#define PileOuFace rand()%2
+#define PileOuFace rand()%2   
+//
+#define min(x,y) (x)<(y)?(x):(y)
 
 // -------------- PROTOTYPAGE --------------------------------------------------------------------------
 
@@ -66,7 +68,7 @@ void DrawTour (void);
 void DrawCOCH (void);  
 void AffichageEcran (void);
 void ScoreO(void);
-void CalcVx0Vy0 (void); 
+void CalcVinit (void); 
 void DesActivation (int i);
 void IndicePresenceOiseau (void); 
 //void PresenceTrace (void); 
@@ -96,9 +98,14 @@ int posX0, posY0, debutX;
 int posX[3], posY[3], posoldX[3], posoldY[3]; //pour 3 oiseaux // 
 int indice[3]={0,0,0};
 
-float Vx0, Vy0, currentTIME, deltaT;
+float vitX[3],vitY[3];
+float alphas[3];
+float currentTIME, deltaT;
+
+/*float Vx0, Vy0;
 float Vx01, Vy01,alpha1;
 float Vx02, Vy02, alpha2;
+*/
 
 // Voir define.materiaux pour les valeurs Arbitraires
 int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR;
@@ -250,8 +257,6 @@ void SCOREconstruct(int bt, int bs, int co)	  //nombre de béton, bois //score br
 	scoreS=scoreS+bt*VALbet+bs*VALbois+co*VALcochon;
 }
 
-//------------------------------- 
-//------------------------------- 
 //------------------------------- 
 
 void initialisationVglobales (void)
@@ -438,30 +443,14 @@ void ScoreO(void) // Pas complet : depend que SCOREoiseau
 
 //-------------------------------
 
-void CalcVx0Vy0 (void)
+void CalcVinit (void)
 {
 	int i;
-	for (i=1; i<NbrO; i++);
+	for (i=0; i<NbrO; i++);
 	{
-		Vx0=V0*cos(alpha*pi/180)-vent;
-		Vy0=-V0*sin(alpha*pi/180);
-
-		if (alpha>85)
-		{
-			alpha1=90;
-		}else alpha1=alpha+5;
-			
-		Vx01=V0*cos(alpha1*pi/180);
-		Vy01=-V0*sin(alpha1*pi/180);
-			
-		if (alpha<5)
-		{
-			alpha2=0;
-		}
-		alpha2=alpha-5;
-			
-		Vx02=V0*cos(alpha2*pi/180);
-		Vy02=-V0*sin(alpha2*pi/180);
+		alphas[i]=min(alpha+i*5,90); // Decalage des Oiseaux
+		vitX[i]=V0*cos(alphas[i]*pi/180)-vent;
+		vitY[i]=-V0*sin(alphas[i]*pi/180);
 	}
 }
 
@@ -480,36 +469,12 @@ void DesActivation (int i) // Pas complet : il manque des numerique
 	SetCtrlAttribute (mode, MODE_Trace, ATTR_DIMMED,i);
 }
 
-//-------------------------------
-
-/*void PresenceTrace (void)	 // a supprimer
-{
-	int k;
-	for (k=0; k<=NbrO-1; k++)
-	{
-		if (trace==0)
-		{	//CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
-			GetBitmapFromFile("fond.bmp", &bmp);
-			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
-			Matrice();
-		}
-		// Si marche pas mettre en main
-		//CanvasClear(panelHandle, MakeRect(posY[k], posX[k], sizeCASE, sizeCASE));
-					
-		//=> fond Blanc du Canvas = lumiere 
-		//CanvasClear (panelHandle, PANEL_CANVAS, VAL_ENTIRE_OBJECT);
-		
-		if (trace==1)
-			DrawBirds(VAL_WHITE);
-	}
-}	 */
-
 //-------------------------------  
 
 void CoordonneeOiseauEnMat(int k)
 {
-	posX[k]=Vx0*currentTIME+posX0;
-	posY[k]=Vy0*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
+	posX[k]=vitX[k]*currentTIME+posX0;
+	posY[k]=vitY[k]*currentTIME+0.5*g*currentTIME*currentTIME+posY0;
 }
 
 //-------------------------------  
@@ -528,44 +493,50 @@ void collision (int k) // gestion de la collision
 	int i, j, a;
 	i=posX[k]/sizeCASE;
 	j=posY[k]/sizeCASE;
-		
-	//test collision
-	if (Mat[i][j])
-	{
-		//disparition de la boule
-		indice[k]=0;
-		//incrementation du score
-		if (Mat[i][j]==MATbeton)
-			SCOREconstruct(1,0,0);
-		if (Mat[i][j]==MATbois)
-			SCOREconstruct(0,1,0);
-		if (Mat[i][j]==MATcoch)
-			SCOREconstruct(0,0,1);
-						
-		//effondrement strucuture
-		for (a=j; a>1; a--)
+	if (	((posX[k] <= width) || (posY[k] <= height)) )	
 		{
-			Mat[i][j]=Mat[i][j-1];
-			Mat[i][0]=MATfond;
-			j--;
+			indice[k]=0;
 		}
-		//DrawBack();
-		Matrice();
-	}
-	// deplacement strucutre (optionnel si tout marche)
+	else 	
+		{//test collision
+			if (Mat[i][j])
+			{
+				//disparition de la boule
+				indice[k]=0;
+				//incrementation du score
+				if (Mat[i][j]==MATbeton)
+					SCOREconstruct(1,0,0);
+				if (Mat[i][j]==MATbois)
+					SCOREconstruct(0,1,0);
+				if (Mat[i][j]==MATcoch)
+					SCOREconstruct(0,0,1);
+						
+				//effondrement strucuture
+				for (a=j; a>1; a--)
+				{
+					Mat[i][j]=Mat[i][j-1];
+					Mat[i][0]=MATfond;
+					j--;
+				}
+				//DrawBack();
+				Matrice();
+			}
+			// Deplacement structre (optionnel si tout marche)
+		}
 }
+
 		
 //------------------------------- 
 
-int testCANVAS (void)
-{
-	if (	((posX[0] <= width) || (posY[0] <= height)) ||
-			((posX[1] <= width) || (posY[1] <= height)) ||
-			((posX[2] <= width) || (posY[2] <= height))	)
-		return 1;
-	else 
-		return 0;
-}
+//int testCANVAS (void)
+//{
+//	if (	((posX[0] <= width) || (posY[0] <= height)) ||
+//			((posX[1] <= width) || (posY[1] <= height)) ||
+//			((posX[2] <= width) || (posY[2] <= height))	)
+//		return 1;
+//	else 
+//		return 0; 
+//}				  
 
 //------------------------------- 
 																   /*
@@ -608,7 +579,7 @@ int CVICALLBACK ON_FIRE (int panel, int control, int event,
 			
 			ScoreO(); 
 		
-			CalcVx0Vy0 ();  // Vitesse & angle initiaux de chaque oiseau
+			CalcVinit ();  // Vitesse & angle initiaux de chaque oiseau
 			
 			deltaT=5./(V0+1);
 			
