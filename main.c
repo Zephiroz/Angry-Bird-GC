@@ -44,8 +44,8 @@
 #define MATbois 2
 #define MATbeton 3
 // Mes fonctions aleatoires
-#define Hauteur rand()%Nby
-#define Largeur rand()%(Nbx-debutX)
+#define Hauteur rand()%(Nby)
+#define Largeur rand()%(Nbx-debutX)+debutX
 #define PileOuFace rand()%2   
 //
 #define min(x,y) (x)<(y)?(x):(y)
@@ -242,6 +242,13 @@ void DrawBirds(int coul)
 	{
 		if (indice[k]&&(posX[k] <= width) && (posY[k] <= height))
 			DrawBird(posX[k], posY[k], coul);
+			if (!trace)
+			{
+				Construction(i, j, MAT2Col(Mat [i][j]));
+				Construction(i+1, j, MAT2Col(Mat [i+1][j]));
+				Construction(i, j+1, MAT2Col(Mat [i][j+1]));
+			}
+			
 	}
 }
 
@@ -522,12 +529,12 @@ void collision (int k) // gestion de la collision
 	int i, j, a;
 	i=posX[k]/sizeCASE;
 	j=posY[k]/sizeCASE;
-	if (	 ((posX[k] > width) || (posY[k] > height)) )	
+	/*if (	 ((posX[k] > width) || (posY[k] > height)) )	
 		{
 			indice[k]=0;
 		}
 	else 	
-		{//test collision
+		{//test collision*/
 			if (Mat[i][j])
 			{
 				//disparition de la boule
@@ -551,7 +558,7 @@ void collision (int k) // gestion de la collision
 				Matrice();
 			}
 			// Deplacement structre (optionnel si tout marche)
-		}
+		//}
 }
 
 		
@@ -647,13 +654,17 @@ int CVICALLBACK ON_TIMER (int panel, int control, int event,
 						posoldY[k]=posY[k];
 						
 						// calcul des nouvelles positions 
-						CoordonneeOiseauEnMat(k);  
-						
-						// Dessin Oiseau
-						DrawBird(posX[k], posY[k], color);
-						if (trace ==1)
-							DrawBird(posoldX[k], posoldY[k], VAL_WHITE);
-						collision(k);
+						CoordonneeOiseauEnMat(k);
+						if ((posX[k] > width) || (posY[k] > height))	
+							indice[k]=0;
+						else 
+						{
+							collision(k);
+							// Dessin Oiseau
+							DrawBird(posX[k], posY[k], color);
+							//if (trace ==1)
+							//	DrawBird(posoldX[k], posoldY[k], VAL_WHITE);
+						}						
 					}
 				}
 				//Calcule et Affichage du score
