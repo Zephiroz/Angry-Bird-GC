@@ -28,8 +28,8 @@
 #define g 9.8
 
 // Type de la tour : 
-#define colorBETON colorB/*colorG*/
-#define colorBOIS colorV/*colorM*/
+#define colorBETON colorG
+#define colorBOIS colorM
 
 // Score :
 #define VALoisN 3
@@ -108,7 +108,7 @@ float Vx02, Vy02, alpha2;
 */
 
 // Voir define.materiaux pour les valeurs Arbitraires
-int color, colorCOCH, colorR, colorN, colorT, colorY, colorV, colorB, fond ,typeTOUR;
+int color, colorCOCH, colorR, colorN, colorM, colorG, colorT, colorY, colorV, colorB, fond ,typeTOUR;
 
 int Mat[Nbx][Nby];// L'aire de jeu
 
@@ -173,10 +173,10 @@ void DrawBird(int x, int y, int coul)
 	//CanvasDrawOval (panelHandle, PANEL_CANVAS, MakeRect(y,x,15,15), VAL_DRAW_FRAME_AND_INTERIOR); */
 	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, coul, VAL_ENTIRE_OBJECT, MakeRect(y,x,sizeCASE,sizeCASE) );
 	
-	//GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\fond.bmp", &color); 
+	//GetBitmapFromFile ("Projet info\\VABfond.bmp", &color); 
 }
 
-//-------------------------------
+//------------------------------- 
 
 void Construction(int i, int j, int coul)
 {
@@ -185,11 +185,13 @@ void Construction(int i, int j, int coul)
 	CanvasDrawRect (panelHandle, PANEL_CANVAS, MakeRect(j*sizeCASE,i*sizeCASE,sizeCASE,sizeCASE), VAL_DRAW_FRAME_AND_INTERIOR); 
 }
 
+//------------------------------- 
+
 void DrawBack(void)
 {
-	int bmp;
-	GetBitmapFromFile("images\\fond.bmp", &bmp);
-	CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));
+	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, fond);
+	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_FILL_COLOR, fond); 
+	CanvasDrawRect (panelHandle, PANEL_CANVAS, MakeRect(0,0,height,width), VAL_DRAW_FRAME_AND_INTERIOR);
 }
 // -------------------------------
 
@@ -201,8 +203,8 @@ void Matrice(void)
 	{
 		for (i=0; i<Nbx; i++)
 		{
-			if (Mat[i][j]==MATcoch)/*Does Nothng*/;
-				Construction(i, j, MAT2Col(Mat [i][j]));
+			if (Mat[i][j]==MATcoch);   
+			Construction(i, j, MAT2Col(Mat [i][j]));
 		}
 	}
 }	 
@@ -251,7 +253,7 @@ void SCOREoiseau(int i, int j, int k) // Nombre de boule normal(3pts), Agressive
 }
 
 //-------------------------------  
-
+								
 void SCOREconstruct(int bt, int bs, int co)	  //nombre de béton, bois //score brique : beton (10) bois(5)  
 {
 	scoreS=scoreS+bt*VALbet+bs*VALbois+co*VALcochon;
@@ -265,7 +267,7 @@ void initialisationVglobales (void)
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_WIDTH, width);
 	SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_HEIGHT, height);
 	SetCtrlAttribute (panelHandle, PANEL_TIMER, ATTR_ENABLED, 0); 
-	
+	 
 
 	vent = 0;
 	light = 1;
@@ -289,21 +291,46 @@ void initialisationVglobales (void)
 		posY[k]=posY0;
 	}
 	debutX=5;
-		
+	
+	/* rubrique des couleurs
+	 VAL_CYAN
+    VAL_WHITE
+    VAL_TRANSPARENT
+    VAL_PANEL_GRAY
+    VAL_RED
+    VAL_OFFWHITE
+    VAL_BLUE
+    VAL_GRAY
+    VAL_MAGENTA
+    VAL_YELLOW
+    VAL_DK_RED
+    VAL_DK_BLUE
+    VAL_DK_GREEN
+    VAL_DK_CYAN
+    VAL_DK_MAGENTA
+    VAL_DK_YELLOW
+    VAL_LT_GRAY
+    VAL_DK_GRAY
+    VAL_BLACK
+    VAL_GREEN
+	VAL_BROWN
+*/
 	// Couleurs 
 	colorN = VAL_BLACK;
 	colorY = VAL_YELLOW;
 	colorR = VAL_RED;
 	colorT = VAL_TRANSPARENT;
-
+	colorM = (255*255*184)+(255*170)+(0);
+	colorG = VAL_LT_GRAY; 
 	colorV = VAL_GREEN;
 	colorB = VAL_BLUE;
-
-	// Choix du fond
-	fond=colorT;
 	
-	// Choix du cochon
-	colorCOCH = colorR; 
+	// Choix du fond
+	fond=VAL_DK_BLUE;//250+100*255;
+	
+	// Choix du cochon 
+	
+	colorCOCH = colorV;
 }
 
 //------------------------------- 
@@ -313,13 +340,13 @@ void BitMapTypeOiseau(void)
 	switch(typeO)
 	{	
 		case 0:
-			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\bebebird.bmp", &color);
+			GetBitmapFromFile ("images\\bebebird.bmp", &color);
 			break;
 		case 1:
-			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\agressivebird.bmp", &color);
+			GetBitmapFromFile ("images\\agressivebird.bmp", &color);
 			break;
 		case 2:
-			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\poweredbird.bmp", &color);
+			GetBitmapFromFile ("images\\poweredbird.bmp", &color);
 			break;
 	}	
 }
@@ -811,7 +838,7 @@ int CVICALLBACK ON_QUITMENU (int panel, int event, void *callbackData,
 			initialisationVglobales ();
 			
 			// chargement image.bmp dans le fond du Canvas
-			GetBitmapFromFile ("c:\\Users\\Dorian\\Desktop\\Projet info\\images\\fond.bmp", &bmp); 
+			GetBitmapFromFile ("images\\VABfond.bmp", &bmp); 
 			CanvasDrawBitmap (panelHandle, PANEL_CANVAS, bmp, VAL_ENTIRE_OBJECT, MakeRect(0, 0, height, width));  
 			// chargement VAL_TRANSPARENT dans CANVAS_2
 			SetCtrlAttribute (panelHandle, PANEL_CANVAS, ATTR_PEN_COLOR, VAL_TRANSPARENT);
